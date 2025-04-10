@@ -5,10 +5,10 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#import "gpupixel_view.h"
-#include "filter.h"
-#include "gpupixel_context.h"
-#include "gpupixel_program.h"
+#import "sink/objc/gpupixel_view.h"
+#include "filter/filter.h"
+#include "core/gpupixel_context.h"
+#include "core/gpupixel_program.h"
 
 #import <AVFoundation/AVFoundation.h>
 

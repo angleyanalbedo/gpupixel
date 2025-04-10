@@ -6,9 +6,9 @@
  */
 
 #pragma once
-#include "filter.h"
-#include "gpupixel_define.h"
-#include "math_toolbox.h"
+#include "filter/filter.h"
+#include "core/gpupixel_define.h"
+#include "utils/math_toolbox.h"
 
 namespace gpupixel {
 class GPUPIXEL_API ColorMatrixFilter : public Filter {

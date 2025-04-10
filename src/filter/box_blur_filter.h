@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 
-#include "box_mono_blur_filter.h"
-#include "filter_group.h"
+#include "filter/box_mono_blur_filter.h"
+#include "filter/filter_group.h"
 namespace gpupixel {
 class GPUPIXEL_API BoxBlurFilter : public FilterGroup {
  public:

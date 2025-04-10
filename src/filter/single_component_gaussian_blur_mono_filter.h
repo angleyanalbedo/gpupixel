@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gaussian_blur_mono_filter.h"
-#include "gpupixel_define.h"
+#include "filter/gaussian_blur_mono_filter.h"
+#include "core/gpupixel_define.h"
 
 namespace gpupixel {
 class GPUPIXEL_API SingleComponentGaussianBlurMonoFilter

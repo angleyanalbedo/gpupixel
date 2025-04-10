@@ -5,8 +5,8 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "nearby_sampling3x3_filter.h"
-#include "gpupixel_context.h"
+#include "filter/nearby_sampling3x3_filter.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 const std::string kNearbySampling3x3SamplingVertexShaderString = R"(

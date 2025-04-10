@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "face_makeup_filter.h"
-#include "gpupixel_context.h"
-#include "source_image.h"
+#include "filter/face_makeup_filter.h"
+#include "core/gpupixel_context.h"
+#include "source/source_image.h"
 namespace gpupixel {
 
 const std::string FaceMakeupFilterVertexShaderString = R"(

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel_program.h"
-#include "sink.h"
+#include "core/gpupixel_program.h"
+#include "sink/sink.h"
 
 namespace gpupixel {
 class GPUPIXEL_API SinkRender : public Sink {

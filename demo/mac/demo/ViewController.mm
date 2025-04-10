@@ -6,8 +6,7 @@
 //
 
 #import "ViewController.h"
-#import <gpupixel/face_detector.h>
-#import <gpupixel/gpupixel.h>
+#import <gpupixel/core/gpupixel.h>
 #import "VideoCameraManager.h"
 
 using namespace gpupixel;

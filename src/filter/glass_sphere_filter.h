@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel_define.h"
-#include "sphere_refraction_filter.h"
+#include "core/gpupixel_define.h"
+#include "filter/sphere_refraction_filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API GlassSphereFilter : public SphereRefractionFilter {

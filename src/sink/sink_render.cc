@@ -5,10 +5,10 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "sink_render.h"
-#include "filter.h"
-#include "gpupixel_context.h"
-#include "util.h"
+#include "sink/sink_render.h"
+#include "filter/filter.h"
+#include "core/gpupixel_context.h"
+#include "utils/util.h"
 
 namespace gpupixel {
 

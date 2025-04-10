@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "beauty_face_unit_filter.h"
-#include "gpupixel_context.h"
-#include "source_image.h"
+#include "filter/beauty_face_unit_filter.h"
+#include "core/gpupixel_context.h"
+#include "source/source_image.h"
 
 namespace gpupixel {
 const std::string kGPUImageBaseBeautyFaceVertexShaderString = R"(

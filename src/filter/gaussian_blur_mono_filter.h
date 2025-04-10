@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "filter_group.h"
-#include "gpupixel_define.h"
+#include "filter/filter_group.h"
+#include "core/gpupixel_define.h"
 
 namespace gpupixel {
 class GPUPIXEL_API GaussianBlurMonoFilter : public Filter {

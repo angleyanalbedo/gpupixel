@@ -7,13 +7,13 @@
 
 #pragma once
 
-#include "filter_group.h"
-#include "gpupixel_define.h"
+#include "filter/filter_group.h"
+#include "core/gpupixel_define.h"
 
-#include "beauty_face_unit_filter.h"
-#include "box_blur_filter.h"
-#include "box_high_pass_filter.h"
-#include "gaussian_blur_filter.h"
+#include "filter/beauty_face_unit_filter.h"
+#include "filter/box_blur_filter.h"
+#include "filter/box_high_pass_filter.h"
+#include "filter/gaussian_blur_filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API BeautyFaceFilter : public FilterGroup {

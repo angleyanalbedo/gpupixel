@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "source.h"
+#include "source/source.h"
 
 namespace gpupixel {
 class GPUPIXEL_API SourceImage : public Source {

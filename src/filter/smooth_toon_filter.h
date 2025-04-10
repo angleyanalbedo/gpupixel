@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "filter_group.h"
-#include "gaussian_blur_filter.h"
-#include "gpupixel_define.h"
-#include "toon_filter.h"
+#include "filter/filter_group.h"
+#include "filter/gaussian_blur_filter.h"
+#include "core/gpupixel_define.h"
+#include "filter/toon_filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API SmoothToonFilter : public FilterGroup {

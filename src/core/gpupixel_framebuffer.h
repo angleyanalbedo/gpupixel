@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 
 #include <vector>
 

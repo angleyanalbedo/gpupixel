@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 
-#include "box_blur_filter.h"
-#include "box_difference_filter.h"
-#include "filter_group.h"
+#include "filter/box_blur_filter.h"
+#include "filter/box_difference_filter.h"
+#include "filter/filter_group.h"
 namespace gpupixel {
 class GPUPIXEL_API BoxHighPassFilter : public FilterGroup {
  public:

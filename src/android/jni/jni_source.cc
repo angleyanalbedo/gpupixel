@@ -3,10 +3,10 @@
 #include <list>
 #include <string>
 
-#include "filter.h"
-#include "sink.h"
-#include "source.h"
-#include "util.h"
+#include "filter/filter.h"
+#include "sink/sink.h"
+#include "source/source.h"
+#include "utils/util.h"
 
 using namespace gpupixel;
 

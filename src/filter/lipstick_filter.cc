@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "lipstick_filter.h"
-#include "gpupixel_context.h"
-#include "source_image.h"
+#include "filter/lipstick_filter.h"
+#include "core/gpupixel_context.h"
+#include "source/source_image.h"
 namespace gpupixel {
 std::shared_ptr<LipstickFilter> LipstickFilter::Create() {
   auto ret = std::shared_ptr<LipstickFilter>(new LipstickFilter());

@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "filter_group.h"
-#include "gpupixel_define.h"
-#include "grayscale_filter.h"
-#include "nearby_sampling3x3_filter.h"
+#include "filter/filter_group.h"
+#include "core/gpupixel_define.h"
+#include "filter/grayscale_filter.h"
+#include "filter/nearby_sampling3x3_filter.h"
 
 namespace gpupixel {
 

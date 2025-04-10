@@ -4,7 +4,7 @@
  * Created by PixPark on 2021/6/24.
  * Copyright © 2021 PixPark. All rights reserved.
  */
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 #if defined(GPUPIXEL_IOS)
 #import <UIKit/UIKit.h>
 #elif defined(GPUPIXEL_MAC)
@@ -13,8 +13,8 @@
 
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
 
-#include "gpupixel_framebuffer.h"
-#include "sink.h"
+#include "core/gpupixel_framebuffer.h"
+#include "sink/sink.h"
 
 @protocol GPUPixelSink <NSObject>
 

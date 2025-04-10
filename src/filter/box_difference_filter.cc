@@ -5,8 +5,8 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "box_difference_filter.h"
-#include "gpupixel_context.h"
+#include "filter/box_difference_filter.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 const std::string kBoxDifferenceVertexShaderString = R"(

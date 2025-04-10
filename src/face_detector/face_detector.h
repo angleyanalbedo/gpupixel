@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <functional>
 #include <vector>
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 namespace mars_face_kit {
 class MarsFaceDetector;
 }

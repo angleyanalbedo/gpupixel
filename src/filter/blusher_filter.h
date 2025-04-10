@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "face_makeup_filter.h"
+#include "filter/face_makeup_filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API BlusherFilter : public FaceMakeupFilter {

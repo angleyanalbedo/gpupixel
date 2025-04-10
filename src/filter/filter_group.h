@@ -8,10 +8,10 @@
 #pragma once
 
 #include <vector>
-#include "filter.h"
-#include "gpupixel_define.h"
-#include "sink.h"
-#include "source.h"
+#include "filter/filter.h"
+#include "core/gpupixel_define.h"
+#include "sink/sink.h"
+#include "source/source.h"
 
 namespace gpupixel {
 class GPUPIXEL_API FilterGroup : public Filter {

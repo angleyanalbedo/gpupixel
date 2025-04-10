@@ -5,8 +5,8 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "bilateral_filter.h"
-#include "gpupixel_context.h"
+#include "filter/bilateral_filter.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 const std::string kBilateralBlurVertexShaderString = R"(

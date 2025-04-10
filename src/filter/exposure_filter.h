@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#include "filter.h"
-#include "gpupixel_define.h"
+#include "filter/filter.h"
+#include "core/gpupixel_define.h"
 
 namespace gpupixel {
 class GPUPIXEL_API ExposureFilter : public Filter {

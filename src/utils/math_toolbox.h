@@ -9,7 +9,7 @@
 
 #include <cmath>
 #include <cstring>
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 
 namespace gpupixel {
 class GPUPIXEL_API Vector2 {

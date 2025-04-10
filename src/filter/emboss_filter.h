@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#include "convolution3x3_filter.h"
-#include "gpupixel_define.h"
+#include "filter/convolution3x3_filter.h"
+#include "core/gpupixel_define.h"
 
 namespace gpupixel {
 class GPUPIXEL_API EmbossFilter : public Convolution3x3Filter {

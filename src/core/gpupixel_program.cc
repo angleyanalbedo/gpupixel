@@ -5,10 +5,10 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel_program.h"
+#include "core/gpupixel_program.h"
 #include <algorithm>
-#include "gpupixel_context.h"
-#include "util.h"
+#include "core/gpupixel_context.h"
+#include "utils/util.h"
 
 namespace gpupixel {
 

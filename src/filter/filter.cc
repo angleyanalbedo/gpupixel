@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "filter.h"
-#include "gpupixel.h"
-#include "gpupixel_context.h"
+#include "filter/filter.h"
+#include "core/gpupixel.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 std::map<std::string, std::function<std::shared_ptr<Filter>()>>

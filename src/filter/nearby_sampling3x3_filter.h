@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "filter.h"
-#include "gpupixel_define.h"
+#include "filter/filter.h"
+#include "core/gpupixel_define.h"
 
 namespace gpupixel {
 GPUPIXEL_API extern const std::string

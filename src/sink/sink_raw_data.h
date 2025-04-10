@@ -14,8 +14,8 @@
 #include <mutex>
 #include <string>
 
-#include "gpupixel_program.h"
-#include "sink.h"
+#include "core/gpupixel_program.h"
+#include "sink/sink.h"
 
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
 #import <AVFoundation/AVFoundation.h>

@@ -6,9 +6,9 @@
  */
 
 #pragma once
-#include "gpupixel_define.h"
-#include "math_toolbox.h"
-#include "nearby_sampling3x3_filter.h"
+#include "core/gpupixel_define.h"
+#include "utils/math_toolbox.h"
+#include "filter/nearby_sampling3x3_filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API Convolution3x3Filter : public NearbySampling3x3Filter {

@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-#include "face_detector.h"
 #include "gpupixel.h"
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"

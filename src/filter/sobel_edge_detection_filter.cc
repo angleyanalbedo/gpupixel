@@ -5,8 +5,8 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "sobel_edge_detection_filter.h"
-#include "gpupixel_context.h"
+#include "filter/sobel_edge_detection_filter.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 //   Code from "Graphics Shaders: Theory and Practice" by M. Bailey and S.

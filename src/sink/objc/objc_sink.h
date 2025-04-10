@@ -8,7 +8,7 @@
 #ifndef IOSTarget_hpp
 #define IOSTarget_hpp
 
-#import "gpupixel_sink.h"
+#import "sink/objc/gpupixel_sink.h"
 
 namespace gpupixel {
 

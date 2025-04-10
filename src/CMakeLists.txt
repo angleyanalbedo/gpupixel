@@ -2,6 +2,14 @@
 # ----------------------------------------
 cmake_minimum_required(VERSION 3.10)
 
+# 设置CMake策略CMP0177
+if(POLICY CMP0177)
+  cmake_policy(SET CMP0177 NEW)
+endif()
+
+# 设置安装位置为输出目录
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../output)
+
 # Set C++ standard and compiler options
 set(CMAKE_CXX_STANDARD 11)
 #set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
@@ -53,23 +61,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 # Core project headers
 include_directories(
     # Project core modules
-    ${CMAKE_CURRENT_SOURCE_DIR}/core
-    ${CMAKE_CURRENT_SOURCE_DIR}/filter
-    ${CMAKE_CURRENT_SOURCE_DIR}/source
-    ${CMAKE_CURRENT_SOURCE_DIR}/sink
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/face_detect
-    
-    # Platform specific headers
-    ${CMAKE_CURRENT_SOURCE_DIR}/android/jni
-    ${CMAKE_CURRENT_SOURCE_DIR}/sink/objc
-    
-    # Third-party dependencies
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glfw/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/stb
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    # # Third-party dependencies
+    # ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glfw/include
+    # ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/include
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libyuv/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/include
 )
 
 # Collect source files
@@ -78,7 +74,7 @@ file(GLOB SOURCE_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/filter/*"         
     "${CMAKE_CURRENT_SOURCE_DIR}/source/*"       
     "${CMAKE_CURRENT_SOURCE_DIR}/sink/*"                               
-    "${CMAKE_CURRENT_SOURCE_DIR}/face_detect/*"                 
+    "${CMAKE_CURRENT_SOURCE_DIR}/face_detector/*"                 
     "${CMAKE_CURRENT_SOURCE_DIR}/utils/*"                 
     "${CMAKE_CURRENT_SOURCE_DIR}/third_party/libyuv/source/*"
 )
@@ -90,7 +86,7 @@ file(GLOB EXPORT_HEADER
     "${CMAKE_CURRENT_SOURCE_DIR}/source/*.h"       
     "${CMAKE_CURRENT_SOURCE_DIR}/sink/*.h"                      
     "${CMAKE_CURRENT_SOURCE_DIR}/utils/*.h"                 
-    "${CMAKE_CURRENT_SOURCE_DIR}/face_detect/*.h"      
+    "${CMAKE_CURRENT_SOURCE_DIR}/face_detector/*.h"      
     "${CMAKE_CURRENT_SOURCE_DIR}/third_party/glfw/include/*"
     "${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/include/*"
 )
@@ -112,13 +108,9 @@ elseif(${CURRENT_OS} STREQUAL "linux")
     file(GLOB GLAD_SOURCE_FILE  "${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/src/*.c" )
     list(APPEND SOURCE_FILES ${GLAD_SOURCE_FILE})
 elseif(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
-    file(GLOB OBJC_HEADER_FILE  "${CMAKE_CURRENT_SOURCE_DIR}/sink/objc/*.h")
-    list(APPEND EXPORT_HEADER     ${OBJC_HEADER_FILE})
     file(GLOB OBJC_SOURCE_FILE  "${CMAKE_CURRENT_SOURCE_DIR}/sink/objc/*")
     list(APPEND SOURCE_FILES ${OBJC_SOURCE_FILE})
 elseif(${CURRENT_OS} STREQUAL "android")
-    file(GLOB OBJC_HEADER_FILE  "${CMAKE_CURRENT_SOURCE_DIR}/android/jni/*.h")
-    list(APPEND EXPORT_HEADER     ${OBJC_HEADER_FILE})
     file(GLOB JNI_SOURCE_FILE  "${CMAKE_CURRENT_SOURCE_DIR}/android/jni/*")
     list(APPEND SOURCE_FILES ${JNI_SOURCE_FILE})
 endif()
@@ -128,50 +120,8 @@ endif()
 # Create shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${RESOURCE_FILES})
 
-# Platform specific library configuration
-if(${CURRENT_OS} STREQUAL "linux")
-    # Configure Linux specific settings
-    add_library(mars-face-kit SHARED IMPORTED)
-    set_target_properties(mars-face-kit PROPERTIES IMPORTED_LOCATION
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so)
-
-    # Copy resources and libraries
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
-        COMMAND ${CMAKE_COMMAND} -E copy_directory 
-            ${CMAKE_CURRENT_SOURCE_DIR}/res ${OUTPUT_INSTALL_PATH}/res
-        COMMAND ${CMAKE_COMMAND} -E copy_directory 
-            ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/models ${OUTPUT_INSTALL_PATH}/models
-        COMMAND ${CMAKE_COMMAND} -E make_directory 
-            ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_COMMAND} -E copy 
-            ${EXPORT_HEADER} ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_COMMAND} -E copy 
-            "${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so" 
-            ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-        COMMENT "Copying res and lib files to output/app directory.")
-
-elseif(${CURRENT_OS} STREQUAL "windows")
-    # Configure Windows specific settings
-    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL$<$<CONFIG:Debug>:Debug>")
-
-    # Copy resources and libraries
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
-        COMMAND ${CMAKE_COMMAND} -E copy_directory 
-            ${CMAKE_CURRENT_SOURCE_DIR}/res ${OUTPUT_INSTALL_PATH}/res
-        COMMAND ${CMAKE_COMMAND} -E copy_directory 
-            ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/models ${OUTPUT_INSTALL_PATH}/models
-        COMMAND ${CMAKE_COMMAND} -E make_directory 
-            ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_COMMAND} -E copy 
-            ${EXPORT_HEADER} ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
-        COMMAND ${CMAKE_COMMAND} -E copy 
-            "${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.dll" 
-            ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-        COMMENT "Copying res and lib files to output/app directory.")
-
-elseif(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
+# 为macOS/iOS设置Framework属性
+if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
     # Configure macOS/iOS framework properties
     set_target_properties(${PROJECT_NAME} PROPERTIES
         XCODE_ATTRIBUTE_PRODUCT_NAME ${PROJECT_NAME}
@@ -182,10 +132,156 @@ elseif(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
         CMAKE_XCODE_ATTRIBUTE_BUILT_PRODUCTS_DIR ${PROJECT_NAME}
         MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
         FRAMEWORK_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/
-        PUBLIC_HEADER "${EXPORT_HEADER}"
         RESOURCE "${RESOURCE_FILES}"
     )
+endif()
 
+# 安装头文件，保持目录结构
+if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
+    # 为macOS和iOS平台设置framework头文件安装路径
+    set(FRAMEWORK_INCLUDE_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.framework/Headers")
+    
+    # macOS/iOS平台安装头文件到framework内，保持目录结构
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/core/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/core
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/filter/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/filter
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/source/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/source
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sink/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/sink
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/utils/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/utils
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/face_detector/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/face_detector
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glfw/include/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/third_party/glfw/include
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/include/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/third_party/glad/include
+            FILES_MATCHING PATTERN "*.h")
+
+    # 添加安装stb_image.h的命令
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/stb/
+            DESTINATION ${FRAMEWORK_INCLUDE_DIR}/third_party/stb
+            FILES_MATCHING PATTERN "*.h")
+            
+    # 针对macOS/iOS平台单独添加特殊目录
+    install(DIRECTORY 
+        ${CMAKE_CURRENT_SOURCE_DIR}/sink/objc/
+        DESTINATION ${FRAMEWORK_INCLUDE_DIR}/sink/objc
+        FILES_MATCHING PATTERN "*.h"
+    )
+    endif()
+    # Windows和Linux平台安装头文件到output/include目录
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/core/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/core
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/filter/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/filter
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/source/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/source
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/sink/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/sink
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/utils/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/utils
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/face_detector/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/face_detector
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glfw/include/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/third_party/glfw/include
+            FILES_MATCHING PATTERN "*.h")
+            
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/include/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/third_party/glad/include
+            FILES_MATCHING PATTERN "*.h")
+
+    # 添加安装stb_image.h的命令
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third_party/stb/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/third_party/stb
+            FILES_MATCHING PATTERN "*.h")
+
+    # 针对Android平台单独添加特殊目录
+    if(${CURRENT_OS} STREQUAL "android")
+        install(DIRECTORY 
+            ${CMAKE_CURRENT_SOURCE_DIR}/android/jni/
+            DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/android/jni
+            FILES_MATCHING PATTERN "*.h"
+        )
+    endif()
+
+
+# 安装资源文件
+install(DIRECTORY 
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/
+    DESTINATION ${OUTPUT_INSTALL_PATH}/res
+)
+
+install(DIRECTORY 
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/models/
+    DESTINATION ${OUTPUT_INSTALL_PATH}/models
+)
+
+# 安装库文件
+if(${CURRENT_OS} STREQUAL "linux")
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so
+        DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    )
+elseif(${CURRENT_OS} STREQUAL "windows")
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.dll
+        DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    )
+endif()
+
+# 安装目标库
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    RUNTIME DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    ARCHIVE DESTINATION ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+    FRAMEWORK DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+)
+
+# Platform specific library configuration
+if(${CURRENT_OS} STREQUAL "linux")
+    # Configure Linux specific settings
+    add_library(mars-face-kit SHARED IMPORTED)
+    set_target_properties(mars-face-kit PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so)
+
+elseif(${CURRENT_OS} STREQUAL "windows")
+    # Configure Windows specific settings
+    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL$<$<CONFIG:Debug>:Debug>")
+
+elseif(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
+    # 已经在前面设置了Framework属性，这里不再重复设置
+    
 elseif(${CURRENT_OS} STREQUAL "android")
     # Configure Android specific settings
     add_library(mars-face-kit SHARED IMPORTED)

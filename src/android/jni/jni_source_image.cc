@@ -3,9 +3,9 @@
 #include <list>
 #include <string>
 
-#include "gpupixel_context.h"
-#include "jni_helpers.h"
-#include "source_image.h"
+#include "core/gpupixel_context.h"
+#include "android/jni/jni_helpers.h"
+#include "source/source_image.h"
 
 using namespace gpupixel;
 

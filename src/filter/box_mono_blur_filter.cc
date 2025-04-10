@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "box_mono_blur_filter.h"
+#include "filter/box_mono_blur_filter.h"
 #include <cmath>
-#include "gpupixel_context.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 BoxMonoBlurFilter::BoxMonoBlurFilter(Type type)

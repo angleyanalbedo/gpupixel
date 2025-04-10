@@ -9,10 +9,10 @@
 
 #include <functional>
 #include <map>
-#include "gpupixel_define.h"
-#include "sink.h"
+#include "core/gpupixel_define.h"
+#include "sink/sink.h"
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
-#import "gpupixel_sink.h"
+#import "sink/objc/gpupixel_sink.h"
 #endif
 
 namespace gpupixel {

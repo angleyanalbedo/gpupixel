@@ -5,17 +5,17 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "source_image.h"
-#include "gpupixel_context.h"
-#include "util.h"
+#include "source/source_image.h"
+#include "core/gpupixel_context.h"
+#include "utils/util.h"
 
 #if defined(GPUPIXEL_ANDROID)
 #include <android/bitmap.h>
-#include "jni_helpers.h"
+#include "android/jni/jni_helpers.h"
 #endif
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "third_party/stb/stb_image.h"
 
 namespace gpupixel {
 

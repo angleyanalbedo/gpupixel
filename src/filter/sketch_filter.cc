@@ -5,8 +5,8 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "sketch_filter.h"
-#include "gpupixel_context.h"
+#include "filter/sketch_filter.h"
+#include "core/gpupixel_context.h"
 namespace gpupixel {
 
 const std::string kSketchFilterFragmentShaderString = R"(

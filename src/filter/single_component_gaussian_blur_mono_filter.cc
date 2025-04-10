@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "single_component_gaussian_blur_mono_filter.h"
+#include "filter/single_component_gaussian_blur_mono_filter.h"
 #include <cmath>
-#include "gpupixel_context.h"
+#include "core/gpupixel_context.h"
 
 namespace gpupixel {
 

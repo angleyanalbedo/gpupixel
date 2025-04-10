@@ -5,15 +5,15 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 #if defined(GPUPIXEL_IOS)
 #import <UIKit/UIKit.h>
 #else
 #import <AppKit/NSOpenGLView.h>
 #endif
 
-#import "gpupixel_sink.h"
-#include "sink_render.h"
+#import "sink/objc/gpupixel_sink.h"
+#include "sink/sink_render.h"
 
 #if defined(GPUPIXEL_IOS)
 @interface GPUPixelView : UIView <GPUPixelSink>

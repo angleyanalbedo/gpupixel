@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "blusher_filter.h"
-#include "gpupixel_context.h"
-#include "source_image.h"
+#include "filter/blusher_filter.h"
+#include "core/gpupixel_context.h"
+#include "source/source_image.h"
 namespace gpupixel {
 std::shared_ptr<BlusherFilter> BlusherFilter::Create() {
   auto ret = std::shared_ptr<BlusherFilter>(new BlusherFilter());

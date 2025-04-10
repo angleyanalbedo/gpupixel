@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "source_raw_data.h"
-#include "gpupixel_context.h"
-#include "util.h"
+#include "source/source_raw_data.h"
+#include "core/gpupixel_context.h"
+#include "utils/util.h"
 
 namespace gpupixel {
 

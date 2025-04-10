@@ -6,7 +6,7 @@
  */
 
 #include "gpupixel_framebuffer_factory.h"
-#include "util.h"
+#include "utils/util.h"
 
 namespace gpupixel {
 

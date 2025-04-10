@@ -5,9 +5,9 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "face_detector.h"
-#include "mars_face_detector.h"
-#include "util.h"
+#include "face_detector/face_detector.h"
+#include "third_party/mars-face-kit/include/mars_face_detector.h"
+#include "utils/util.h"
 
 namespace gpupixel {
 std::shared_ptr<FaceDetector> FaceDetector::Create() {

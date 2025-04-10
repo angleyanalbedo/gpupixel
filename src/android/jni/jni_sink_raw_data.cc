@@ -2,8 +2,8 @@
 #include <list>
 #include <string>
 
-#include "gpupixel_context.h"
-#include "jni_helpers.h"
+#include "core/gpupixel_context.h"
+#include "android/jni/jni_helpers.h"
 #include "sink_raw_data.h"
 
 using namespace gpupixel;

@@ -8,8 +8,8 @@
 #pragma once
 
 #include <functional>
-#include "filter.h"
-#include "gpupixel_program.h"
+#include "filter/filter.h"
+#include "core/gpupixel_program.h"
 namespace gpupixel {
 class GPUPIXEL_API SourceRawData : public Filter {
  public:

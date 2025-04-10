@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "gpupixel_define.h"
-#include "gpupixel_program.h"
-#include "sink.h"
-#include "source.h"
+#include "core/gpupixel_define.h"
+#include "core/gpupixel_program.h"
+#include "sink/sink.h"
+#include "source/source.h"
 #include "string"
-#include "util.h"
+#include "utils/util.h"
 
 namespace gpupixel {
 const std::string kDefaultVertexShader = R"(

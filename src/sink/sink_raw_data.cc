@@ -6,10 +6,10 @@
 //  Copyright © 2021 PixPark. All rights reserved.
 //
 
-#include "sink_raw_data.h"
+#include "sink/sink_raw_data.h"
 #include <cstring>
-#include "gpupixel_context.h"
-#include "libyuv.h"
+#include "core/gpupixel_context.h"
+#include "third_party/libyuv/include/libyuv.h"
 
 namespace gpupixel {
 

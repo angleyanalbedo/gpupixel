@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "gpupixel_define.h"
+#include "core/gpupixel_define.h"
 
 #include <string>
 #include <vector>
-#include "math_toolbox.h"
+#include "utils/math_toolbox.h"
 
 namespace gpupixel {
 class GPUPIXEL_API GPUPixelGLProgram {

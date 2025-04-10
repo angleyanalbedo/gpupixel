@@ -36,10 +36,6 @@
 /* Begin PBXFileReference section */
 		840303632B5C2737001A8B3C /* VideoCameraManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoCameraManager.h; sourceTree = "<group>"; };
 		840CD3CF2B88431900EEF7B0 /* gpupixel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gpupixel.framework; path = ../../output/library/macos/gpupixel.framework; sourceTree = "<group>"; };
-		840FD5BA2B7E523D00781FA6 /* vnn_face_osx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vnn_face_osx.framework; path = ../../src/third_party/vnn/libs/macos/vnn_face_osx.framework; sourceTree = "<group>"; };
-		840FD5BB2B7E523D00781FA6 /* vnn_core_osx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vnn_core_osx.framework; path = ../../src/third_party/vnn/libs/macos/vnn_core_osx.framework; sourceTree = "<group>"; };
-		840FD5BC2B7E523D00781FA6 /* vnn_kit_osx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vnn_kit_osx.framework; path = ../../src/third_party/vnn/libs/macos/vnn_kit_osx.framework; sourceTree = "<group>"; };
-		8453D7032B67BE5B009C0532 /* gpupixel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gpupixel.framework; path = ../../output/library/macos/Debug/gpupixel.framework; sourceTree = "<group>"; };
 		84AE136A26FCBCAA00E215AE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		84AE136F26FCBCBB00E215AE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		84AE137426FCBCDA00E215AE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -74,10 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				840CD3CF2B88431900EEF7B0 /* gpupixel.framework */,
-				840FD5BB2B7E523D00781FA6 /* vnn_core_osx.framework */,
-				840FD5BA2B7E523D00781FA6 /* vnn_face_osx.framework */,
-				840FD5BC2B7E523D00781FA6 /* vnn_kit_osx.framework */,
-				8453D7032B67BE5B009C0532 /* gpupixel.framework */,
 				84AE137426FCBCDA00E215AE /* CoreMedia.framework */,
 				84AE136F26FCBCBB00E215AE /* CoreImage.framework */,
 				84AE136A26FCBCAA00E215AE /* AVFoundation.framework */,
