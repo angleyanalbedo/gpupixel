@@ -8,25 +8,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Define and initialize application project
-set(APP_PROJECT_NAME "gpupixel_app")
+set(APP_PROJECT_NAME "app")
 project(${APP_PROJECT_NAME})
-
-# Platform Detection
-# Detect and set the current operating system
-# ----------------------------------------
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(CURRENT_OS "linux")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(CURRENT_OS "windows")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(CURRENT_OS "macos")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "iOS")
-    set(CURRENT_OS "ios")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Android")
-    set(CURRENT_OS "android")
-else()
-    message(FATAL_ERROR "NOT SUPPORT THIS SYSTEM")
-endif()
 
 # Output Directory Configuration
 # Configure paths for different build artifacts
