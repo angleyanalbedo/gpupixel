@@ -6,7 +6,7 @@
  */
 
 #include "gpupixel/face_detector/face_detector.h"
-#include "third_party/mars-face-kit/include/mars_face_detector.h"
+#include "gpupixel/third_party/mars-face-kit/include/mars_face_detector.h"
 #include "gpupixel/utils/util.h"
 
 namespace gpupixel {

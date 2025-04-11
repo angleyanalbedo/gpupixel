@@ -9,7 +9,7 @@
 #include "gpupixel/sink/sink_raw_data.h"
 #include <cstring>
 #include "gpupixel/core/gpupixel_context.h"
-#include "third_party/libyuv/include/libyuv.h"
+#include "gpupixel/third_party/libyuv/include/libyuv.h"
 #include "gpupixel/utils/util.h"
 
 namespace gpupixel {

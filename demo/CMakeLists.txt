@@ -27,15 +27,15 @@ include_directories(
 if(${CURRENT_OS} STREQUAL "windows")
     # For windows systems, use bundled GLFW
     include_directories(
-        $${GPUPIXEL_ROOT_DIR}/third_party/glfw/include
+        $${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/glfw/include
     )
 endif()
 
 # Common third-party includes for all platforms
 include_directories(
-    $${GPUPIXEL_ROOT_DIR}/third_party/stb
-    $${GPUPIXEL_ROOT_DIR}/third_party/glad/include
-    $${GPUPIXEL_ROOT_DIR}/third_party/imgui
+    $${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/stb
+    $${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/glad/include
+    $${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/imgui
 )
 
 # Source Files Configuration
@@ -47,9 +47,9 @@ file(GLOB APP_SOURCE_FILES
 
 # Add ImGui source files
 file(GLOB IMGUI_SOURCE_FILES
-    "$${GPUPIXEL_ROOT_DIR}/third_party/imgui/*.cpp"
-    "$${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends/imgui_impl_glfw.cpp"
-    "$${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends/imgui_impl_opengl3.cpp"
+    "$${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/imgui/*.cpp"
+    "$${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/imgui/backends/imgui_impl_glfw.cpp"
+    "$${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/imgui/backends/imgui_impl_opengl3.cpp"
 )
 list(APPEND APP_SOURCE_FILES ${IMGUI_SOURCE_FILES})
 
@@ -62,10 +62,10 @@ if(${CURRENT_OS} STREQUAL "windows")
     
     # Add Windows-specific library paths
     link_directories(
-        $${GPUPIXEL_ROOT_DIR}/third_party/glfw/lib-mingw-w64)
+        $${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/glfw/lib-mingw-w64)
 
     # Add GLAD source files for Windows
-    file(GLOB GLAD_SOURCE_FILE "$${GPUPIXEL_ROOT_DIR}/third_party/glad/src/*.c")
+    file(GLOB GLAD_SOURCE_FILE "$${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/glad/src/*.c")
     list(APPEND APP_SOURCE_FILES ${GLAD_SOURCE_FILE})
 elseif(${CURRENT_OS} STREQUAL "linux")
    
@@ -97,7 +97,7 @@ elseif(${CURRENT_OS} STREQUAL "windows")
     target_link_libraries(${PROJECT_NAME}
                         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gpupixel.lib
                         opengl32
-                        $${GPUPIXEL_ROOT_DIR}/third_party/glfw/libs/msvc-x64/glfw3.lib)
+                        $${GPUPIXEL_ROOT_DIR}/gpupixel/third_party/glfw/libs/msvc-x64/glfw3.lib)
 
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
 endif()
