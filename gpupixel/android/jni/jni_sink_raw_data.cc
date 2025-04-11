@@ -4,7 +4,7 @@
 
 #include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/android/jni/jni_helpers.h"
-#include "gpupixel/sink_raw_data.h"
+#include "gpupixel/sink/sink_raw_data.h"
 
 using namespace gpupixel;
 

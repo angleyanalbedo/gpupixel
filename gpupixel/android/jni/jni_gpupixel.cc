@@ -14,10 +14,10 @@
 #include <unistd.h>
 #include <cstring>
 #include <string>
-#include "gpupixel/libyuv/convert.h"
-#include "gpupixel/libyuv/convert_argb.h"
-#include "gpupixel/libyuv/planar_functions.h"
-#include "gpupixel/libyuv/rotate.h"
+#include "third_party/libyuv/include/libyuv/convert.h"
+#include "third_party/libyuv/include/libyuv/convert_argb.h"
+#include "third_party/libyuv/include/libyuv/planar_functions.h"
+#include "third_party/libyuv/include/libyuv/rotate.h"
 
 #define LOG_TAG "JNI_GPUPixel"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)

@@ -11,43 +11,25 @@ set(PROJECT_NAME "gpupixel")
 project(${PROJECT_NAME})
 
 # 设置安装位置为输出目录
-set(CMAKE_INSTALL_PREFIX ${GPUPixel_ROOT_DIR}/output)
+set(CMAKE_INSTALL_PREFIX ${GPUPIXEL_ROOT_DIR}/output)
 
 # 设置C++标准和编译器选项
 set(CMAKE_CXX_STANDARD 11)
 #set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 # 设置cmake模块路径
-set(CMAKE_MODULE_PATH "${GPUPixel_ROOT_DIR}/gpupixel")
+set(CMAKE_MODULE_PATH "${GPUPIXEL_ROOT_DIR}/gpupixel")
 
 # 定义API导出宏（Windows DLL导出）
 add_definitions(-DMYMATH_EXPORT_LIBRARY)
 
-# 输出目录配置
-################################################################################
-set(OUTPUT_INSTALL_PATH "${GPUPixel_ROOT_DIR}/output")
-set(OUTPUT_LIB_PATH "${OUTPUT_INSTALL_PATH}/library/${CURRENT_OS}")
-
-# 设置标准输出目录
-set(CMAKE_INCLUDE_OUTPUT_DIRECTORY "${OUTPUT_INSTALL_PATH}/include")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_LIB_PATH}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_LIB_PATH}")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${OUTPUT_LIB_PATH}")
-
-# 设置Debug和Release构建的输出目录
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 # 源文件配置
 ################################################################################
 # 项目核心头文件包含目录
 include_directories(
-    ${GPUPixel_ROOT_DIR}
-    ${GPUPixel_ROOT_DIR}/third_party/libyuv/include
+    ${GPUPIXEL_ROOT_DIR}
+    ${GPUPIXEL_ROOT_DIR}/third_party/libyuv/include
 )
 
 # 主要源文件目录列表
@@ -63,20 +45,20 @@ set(GPUPIXEL_SOURCE_DIRS
 # 收集主要源文件
 unset(SOURCE_CODE_FILES CACHE)
 foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
-    file(GLOB DIR_SOURCES "${GPUPixel_ROOT_DIR}/gpupixel/${DIR}/*")
+    file(GLOB DIR_SOURCES "${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/*")
     list(APPEND SOURCE_CODE_FILES ${DIR_SOURCES})
 endforeach()
 
 # 添加第三方库源文件
-file(GLOB LIBYUV_SOURCES "${GPUPixel_ROOT_DIR}/third_party/libyuv/source/*")
+file(GLOB LIBYUV_SOURCES "${GPUPIXEL_ROOT_DIR}/third_party/libyuv/source/*")
 list(APPEND SOURCE_CODE_FILES ${LIBYUV_SOURCES})
 
 message(STATUS "已添加源代码文件")
 
 # 收集资源文件
 file(GLOB RESOURCE_FILES 
-    "${GPUPixel_ROOT_DIR}/gpupixel/res/*"  
-    "${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/models/*"
+    "${GPUPIXEL_ROOT_DIR}/gpupixel/res*"  
+    "${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/mod*"
 )
 
 message(STATUS "已添加资源文件")
@@ -85,7 +67,7 @@ message(STATUS "已添加资源文件")
 ################################################################################
 if(${CURRENT_OS} STREQUAL "windows" OR ${CURRENT_OS} STREQUAL "linux")
     # Windows和Linux添加GLAD源文件
-    file(GLOB GLAD_SOURCE_FILE "${GPUPixel_ROOT_DIR}/third_party/glad/src/*.c")
+    file(GLOB GLAD_SOURCE_FILE "${GPUPIXEL_ROOT_DIR}/third_party/glad/src/*.c")
     list(APPEND SOURCE_CODE_FILES ${GLAD_SOURCE_FILE})
     
     if(${CURRENT_OS} STREQUAL "windows")
@@ -94,11 +76,11 @@ if(${CURRENT_OS} STREQUAL "windows" OR ${CURRENT_OS} STREQUAL "linux")
     endif()
 elseif(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
     # macOS和iOS添加Objective-C源文件
-    file(GLOB OBJC_SOURCE_FILE "${GPUPixel_ROOT_DIR}/gpupixel/sink/objc/*")
+    file(GLOB OBJC_SOURCE_FILE "${GPUPIXEL_ROOT_DIR}/gpupixel/sink/objc/*")
     list(APPEND SOURCE_CODE_FILES ${OBJC_SOURCE_FILE})
 elseif(${CURRENT_OS} STREQUAL "android")
     # Android添加JNI源文件
-    file(GLOB JNI_SOURCE_FILE "${GPUPixel_ROOT_DIR}/gpupixel/android/jni/*")
+    file(GLOB JNI_SOURCE_FILE "${GPUPIXEL_ROOT_DIR}/gpupixel/android/jni/*")
     list(APPEND SOURCE_CODE_FILES ${JNI_SOURCE_FILE})
 endif()
 
@@ -106,32 +88,55 @@ endif()
 ################################################################################
 # 设置头文件安装目录
 if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
-    # macOS/iOS平台使用framework结构
-    set(HEADER_INSTALL_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.framework/Headers")
+    # macOS/iOS平台使用framework结构和标准include目录
+    set(FRAMEWORK_HEADER_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.framework/Headers")
+    set(STANDARD_HEADER_DIR "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}")
 else()
-    # 其他平台使用标准include目录
-    set(HEADER_INSTALL_DIR "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}")
+    # 其他平台只使用标准include目录
+    set(STANDARD_HEADER_DIR "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}")
 endif()
 
 # 安装主头文件
-install(FILES ${GPUPixel_ROOT_DIR}/gpupixel/gpupixel.h
-        DESTINATION ${HEADER_INSTALL_DIR}/)
+if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
+    # 同时安装到framework和标准目录
+    install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
+            DESTINATION ${FRAMEWORK_HEADER_DIR}/)
+    install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
+            DESTINATION ${STANDARD_HEADER_DIR}/)
+else()
+    # 只安装到标准目录
+    install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
+            DESTINATION ${STANDARD_HEADER_DIR}/)
+endif()
 
 # 安装各子目录头文件
-foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
-    install(DIRECTORY ${GPUPixel_ROOT_DIR}/gpupixel/${DIR}/
-            DESTINATION ${HEADER_INSTALL_DIR}/${DIR}
-            FILES_MATCHING PATTERN "*.h")
-endforeach()
+if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
+    # 同时安装到framework和标准目录
+    foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
+        install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
+                DESTINATION ${FRAMEWORK_HEADER_DIR}/${DIR}
+                FILES_MATCHING PATTERN "*.h")
+        install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
+                DESTINATION ${STANDARD_HEADER_DIR}/${DIR}
+                FILES_MATCHING PATTERN "*.h")
+    endforeach()
+else()
+    # 只安装到标准目录
+    foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
+        install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
+                DESTINATION ${STANDARD_HEADER_DIR}/${DIR}
+                FILES_MATCHING PATTERN "*.h")
+    endforeach()
+endif()
 
 # 资源文件安装
 install(DIRECTORY 
-    ${GPUPixel_ROOT_DIR}/gpupixel/res/
+    ${GPUPIXEL_ROOT_DIR}/gpupixel/res/
     DESTINATION ${OUTPUT_INSTALL_PATH}/res
 )
 
 install(DIRECTORY 
-    ${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/models/
+    ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/models/
     DESTINATION ${OUTPUT_INSTALL_PATH}/models
 )
 
@@ -149,7 +154,7 @@ if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
         MACOSX_FRAMEWORK_IDENTIFIER net.pixpark.${PROJECT_NAME}
         PRODUCT_BUNDLE_IDENTIFIER net.pixpark.${PROJECT_NAME}
         CMAKE_XCODE_ATTRIBUTE_BUILT_PRODUCTS_DIR ${PROJECT_NAME}
-        MACOSX_FRAMEWORK_INFO_PLIST ${GPUPixel_ROOT_DIR}/gpupixel/Info.plist
+        MACOSX_FRAMEWORK_INFO_PLIST ${GPUPIXEL_ROOT_DIR}/gpupixel/Info.plist
         FRAMEWORK_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/
         RESOURCE "${RESOURCE_FILES}"
     )
@@ -158,12 +163,12 @@ endif()
 # 第三方库安装
 if(${CURRENT_OS} STREQUAL "linux")
     install(FILES
-        ${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so
+        ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so
         DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     )
 elseif(${CURRENT_OS} STREQUAL "windows")
     install(FILES
-        ${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.dll
+        ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.dll
         DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     )
 endif()
@@ -182,7 +187,7 @@ install(TARGETS ${PROJECT_NAME}
 if(${CURRENT_OS} STREQUAL "linux")
     add_library(mars-face-kit SHARED IMPORTED)
     set_target_properties(mars-face-kit PROPERTIES IMPORTED_LOCATION
-        ${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so)
+        ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so)
 
 # Windows平台配置
 elseif(${CURRENT_OS} STREQUAL "windows")
@@ -198,7 +203,7 @@ elseif(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
 elseif(${CURRENT_OS} STREQUAL "android")
     add_library(mars-face-kit SHARED IMPORTED)
     set_target_properties(mars-face-kit PROPERTIES IMPORTED_LOCATION
-        ${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/${ANDROID_ABI}/libmars-face-kit.so)
+        ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/${ANDROID_ABI}/libmars-face-kit.so)
 endif()
 
 # 链接库依赖
@@ -215,8 +220,8 @@ if(${CURRENT_OS} STREQUAL "linux")
 elseif(${CURRENT_OS} STREQUAL "windows")
     target_link_libraries(${PROJECT_NAME} 
         opengl32
-        ${GPUPixel_ROOT_DIR}/third_party/glfw/libs/msvc-x64/glfw3.lib
-        ${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.lib
+        ${GPUPIXEL_ROOT_DIR}/third_party/glfw/libs/msvc-x64/glfw3.lib
+        ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.lib
     )
 
 # macOS平台依赖
@@ -230,8 +235,8 @@ elseif(${CURRENT_OS} STREQUAL "macos")
         "-framework AVFoundation"
         "-framework CoreMedia"
         "-framework Metal"
-        "${GPUPixel_ROOT_DIR}/third_party/mnn/libs/${CURRENT_OS}/MNN.framework"
-        "${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.a"
+        "${GPUPIXEL_ROOT_DIR}/third_party/mnn/libs/${CURRENT_OS}/MNN.framework"
+        "${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.a"
     )
 
 # iOS平台依赖
@@ -246,8 +251,8 @@ elseif(${CURRENT_OS} STREQUAL "ios")
         "-framework CoreMedia"
         "-framework Metal"
         "-framework CoreML"
-        "${GPUPixel_ROOT_DIR}/third_party/mnn/libs/${CURRENT_OS}/MNN.framework"
-        "${GPUPixel_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.a"
+        "${GPUPIXEL_ROOT_DIR}/third_party/mnn/libs/${CURRENT_OS}/MNN.framework"
+        "${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.a"
     )
 
 # Android平台依赖

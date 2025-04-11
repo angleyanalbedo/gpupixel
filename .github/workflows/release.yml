@@ -142,7 +142,7 @@ jobs:
       - name: Create zip
         working-directory: ${{github.workspace}}/output
         run: | 
-          cp -r ${{github.workspace}}/src/android/java/gpupixel/build/outputs/aar ${{github.workspace}}/output/library/android
+          cp -r ${{github.workspace}}/src/android/java/gpupixel/build/outputs/aar ${{github.workspace}}/output/libs/android
           zip -r gpupixel_android.zip .
 
       - name: Upload Android Artifact
