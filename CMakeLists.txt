@@ -1,14 +1,17 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
-PROJECT(GPUPixelProject)
+PROJECT(GPUPixel)
+
+# 定义项目根目录变量
+set(GPUPixel_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+# 添加是否构建demo的选项，默认不构建
+option(BUILD_DEMO "Build the demo applications" OFF)
 
 # Add src directory first
-ADD_SUBDIRECTORY(src)
+add_subdirectory(gpupixel)
 
-# Add demo directory and set dependencies
-ADD_SUBDIRECTORY(demo)
-# Get all targets from demo directory
-get_directory_property(EXAMPLE_TARGETS DIRECTORY demo BUILDSYSTEM_TARGETS)
-# Add src dependency for each example target
-foreach(TARGET ${EXAMPLE_TARGETS})
-    add_dependencies(${TARGET} gpupixel)
-endforeach()
+# 仅当BUILD_DEMO选项开启时才添加demo目录
+if(BUILD_DEMO)
+    message(STATUS "Building demo applications")
+    add_subdirectory(demo)
+endif()
