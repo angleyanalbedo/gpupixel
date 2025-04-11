@@ -116,6 +116,8 @@ foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
             FILES_MATCHING PATTERN "*.h")
 endforeach()
 
+install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
+        DESTINATION ${STANDARD_HEADER_DIR}/)
 # 资源文件安装
 install(DIRECTORY 
     ${GPUPIXEL_ROOT_DIR}/gpupixel/res/
