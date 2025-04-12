@@ -11,7 +11,9 @@
 #include "gpupixel/sink/sink.h"
 #include "gpupixel/source/source.h"
 #include "gpupixel/utils/math_toolbox.h"
+
 #include <string>
+#include <vector>
 namespace gpupixel {
 class GPUPixelGLProgram;
 const std::string kDefaultVertexShader = R"(

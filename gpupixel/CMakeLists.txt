@@ -9,10 +9,7 @@ cmake_minimum_required(VERSION 3.10)
 # 定义项目名称并初始化项目
 set(PROJECT_NAME "gpupixel")
 project(${PROJECT_NAME})
-
-# 设置安装位置为输出目录
-set(CMAKE_INSTALL_PREFIX ${GPUPIXEL_ROOT_DIR}/output)
-
+ 
 # 设置C++标准和编译器选项
 set(CMAKE_CXX_STANDARD 11)
 #set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
@@ -31,6 +28,8 @@ include_directories(
     ${GPUPIXEL_ROOT_DIR}
     ${GPUPIXEL_ROOT_DIR}/include
     ${GPUPIXEL_ROOT_DIR}/third_party/libyuv/include
+    ${GPUPIXEL_ROOT_DIR}/third_party/glad/include
+    ${GPUPIXEL_ROOT_DIR}/third_party/glfw/include
 )
 
 # 主要源文件目录列表
@@ -89,8 +88,7 @@ endif()
 ################################################################################
 
 if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
-    # macOS/iOS平台使用framework结构和标准include目录
-    set(FRAMEWORK_HEADER_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.framework/Headers")
+    set(FRAMEWORK_HEADER_DIR "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}.framework/Headers")
 
     install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/include/gpupixel/
     DESTINATION ${FRAMEWORK_HEADER_DIR}
@@ -101,18 +99,18 @@ endif()
 # 其他平台只使用标准include目录
 ################################################################################
 install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/include/
-DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
-FILES_MATCHING PATTERN "*.h")
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h")
 
 # 资源文件安装
 install(DIRECTORY 
     ${GPUPIXEL_ROOT_DIR}/gpupixel/res/
-    DESTINATION ${OUTPUT_INSTALL_PATH}/res
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/res
 )
 
 install(DIRECTORY 
     ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/models/
-    DESTINATION ${OUTPUT_INSTALL_PATH}/models
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/models
 )
 
 # 库配置
@@ -130,7 +128,7 @@ if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
         PRODUCT_BUNDLE_IDENTIFIER net.pixpark.${PROJECT_NAME}
         CMAKE_XCODE_ATTRIBUTE_BUILT_PRODUCTS_DIR ${PROJECT_NAME}
         MACOSX_FRAMEWORK_INFO_PLIST ${GPUPIXEL_ROOT_DIR}/gpupixel/Info.plist
-        FRAMEWORK_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/
+        FRAMEWORK_OUTPUT_DIRECTORY ${CMAKE_INSTALL_LIBDIR}/
         RESOURCE "${RESOURCE_FILES}"
     )
 endif()
@@ -139,21 +137,21 @@ endif()
 if(${CURRENT_OS} STREQUAL "linux")
     install(FILES
         ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/libmars-face-kit.so
-        DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 elseif(${CURRENT_OS} STREQUAL "windows")
     install(FILES
         ${GPUPIXEL_ROOT_DIR}/third_party/mars-face-kit/libs/${CURRENT_OS}/msvc-x64/mars-face-kit.dll
-        DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif()
 
 # 安装目标库
 install(TARGETS ${PROJECT_NAME}
-    LIBRARY DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    RUNTIME DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    ARCHIVE DESTINATION ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
-    FRAMEWORK DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 # 平台特定库配置

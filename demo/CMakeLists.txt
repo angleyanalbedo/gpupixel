@@ -13,29 +13,31 @@ project(${APP_PROJECT_NAME})
 
 # Resource and Runtime Directory Configuration
 # ----------------------------------------
-link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+link_directories(${CMAKE_INSTALL_LIBDIR})
 
 # Include Directories Configuration
 # Add all necessary include paths for header files
 # ----------------------------------------
 include_directories(
     # Project headers
-    ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
+    ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 # Add system-specific include paths
 if(${CURRENT_OS} STREQUAL "windows")
     # For windows systems, use bundled GLFW
     include_directories(
-        $${GPUPIXEL_ROOT_DIR}/third_party/glfw/include
+        ${GPUPIXEL_ROOT_DIR}/third_party/glfw/include
     )
 endif()
 
 # Common third-party includes for all platforms
 include_directories(
-    $${GPUPIXEL_ROOT_DIR}/third_party/stb
-    $${GPUPIXEL_ROOT_DIR}/third_party/glad/include
-    $${GPUPIXEL_ROOT_DIR}/third_party/imgui
+    ${GPUPIXEL_ROOT_DIR}/include
+    ${GPUPIXEL_ROOT_DIR}/third_party/stb
+    ${GPUPIXEL_ROOT_DIR}/third_party/glad/include
+    ${GPUPIXEL_ROOT_DIR}/third_party/imgui
+    ${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends
 )
 
 # Source Files Configuration
@@ -47,9 +49,9 @@ file(GLOB APP_SOURCE_FILES
 
 # Add ImGui source files
 file(GLOB IMGUI_SOURCE_FILES
-    "$${GPUPIXEL_ROOT_DIR}/third_party/imgui/*.cpp"
-    "$${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends/imgui_impl_glfw.cpp"
-    "$${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends/imgui_impl_opengl3.cpp"
+    "${GPUPIXEL_ROOT_DIR}/third_party/imgui/*.cpp"
+    "${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends/imgui_impl_glfw.cpp"
+    "${GPUPIXEL_ROOT_DIR}/third_party/imgui/backends/imgui_impl_opengl3.cpp"
 )
 list(APPEND APP_SOURCE_FILES ${IMGUI_SOURCE_FILES})
 
@@ -62,13 +64,15 @@ if(${CURRENT_OS} STREQUAL "windows")
     
     # Add Windows-specific library paths
     link_directories(
-        $${GPUPIXEL_ROOT_DIR}/third_party/glfw/lib-mingw-w64)
+        ${GPUPIXEL_ROOT_DIR}/third_party/glfw/lib-mingw-w64)
 
     # Add GLAD source files for Windows
-    file(GLOB GLAD_SOURCE_FILE "$${GPUPIXEL_ROOT_DIR}/third_party/glad/src/*.c")
+    file(GLOB GLAD_SOURCE_FILE "${GPUPIXEL_ROOT_DIR}/third_party/glad/src/*.c")
     list(APPEND APP_SOURCE_FILES ${GLAD_SOURCE_FILE})
 elseif(${CURRENT_OS} STREQUAL "linux")
-   
+   # Add GLAD source files for Linux
+   file(GLOB GLAD_SOURCE_FILE "${GPUPIXEL_ROOT_DIR}/third_party/glad/src/*.c")
+   list(APPEND APP_SOURCE_FILES ${GLAD_SOURCE_FILE})
 endif()
 
 # Build Configuration
@@ -86,43 +90,40 @@ if(${CURRENT_OS} STREQUAL "linux")
                         GL
                         glfw
                         dl)
-    set(DEPS_LIBS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libgpupixel.so
-                      ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libmars-face-kit.so)
+    set(DEPS_LIBS ${CMAKE_INSTALL_LIBDIR}/libgpupixel.so
+                      ${CMAKE_INSTALL_LIBDIR}/libmars-face-kit.so)
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
 elseif(${CURRENT_OS} STREQUAL "windows")
     # Windows dependencies
-    set(DEPS_LIBS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gpupixel.dll
-                      ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/mars-face-kit.dll)
+    set(DEPS_LIBS ${CMAKE_INSTALL_LIBDIR}/gpupixel.dll
+                      ${CMAKE_INSTALL_LIBDIR}/mars-face-kit.dll)
 
     target_link_libraries(${PROJECT_NAME}
-                        ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/gpupixel.lib
+                        ${CMAKE_INSTALL_LIBDIR}/gpupixel.lib
                         opengl32
-                        $${GPUPIXEL_ROOT_DIR}/third_party/glfw/libs/msvc-x64/glfw3.lib)
+                        ${GPUPIXEL_ROOT_DIR}/third_party/glfw/libs/msvc-x64/glfw3.lib)
 
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
 endif()
  
-# Post-Build Commands
-# Copy necessary resources and libraries to output directory
+# 安装资源文件
 # ----------------------------------------
-# Copy resource and model files
-set(COPY_DST_RUNTIME_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${GPUPIXEL_ROOT_DIR}/output/res ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/res
+# 安装资源和模型文件
+install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/output/res/
+        DESTINATION ${CMAKE_INSTALL_BINDIR}/res)
 
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/models
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${GPUPIXEL_ROOT_DIR}/output/models ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/models
+install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/output/models/
+        DESTINATION ${CMAKE_INSTALL_BINDIR}/models)
 
-    COMMAND ${CMAKE_COMMAND} -E copy
-    ${GPUPIXEL_ROOT_DIR}/demo/desktop/demo.png ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    
-    COMMENT "Copying res and models files to output/app directory.")
+install(FILES ${GPUPIXEL_ROOT_DIR}/demo/desktop/demo.png
+        DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-# Copy demo image and libraries
-add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    ${DEPS_LIBS} ${COPY_DST_RUNTIME_DIR}
-    COMMENT "Copying libraries to output directory.")
+# 安装依赖库
+install(FILES ${DEPS_LIBS}
+        DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# 可执行文件安装
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    BUNDLE DESTINATION ${CMAKE_INSTALL_BINDIR}  # 对于macOS app bundle
+)
