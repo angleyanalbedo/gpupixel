@@ -37,7 +37,7 @@ set(CMAKE_INSTALL_BINDIR "${CMAKE_INSTALL_PREFIX}/app/${CURRENT_OS}" CACHE PATH 
 option(BUILD_DEMO "Build the demo applications" OFF)
 
 # Add src directory first
-add_subdirectory(gpupixel)
+add_subdirectory(src)
 
 # 仅当BUILD_DEMO选项开启时才添加demo目录
 if(BUILD_DEMO)
