@@ -228,4 +228,4 @@ const float* SinkRender::GetTextureCoordinate(RotationMode rotation_mode) {
   }
 }
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

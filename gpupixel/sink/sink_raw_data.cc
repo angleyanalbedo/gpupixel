@@ -189,4 +189,4 @@ void SinkRawData::InitFramebuffer(int width, int height) {
   }
 }
 
-}  // namespace gpupixel
+}  // namespace gpupixel 
