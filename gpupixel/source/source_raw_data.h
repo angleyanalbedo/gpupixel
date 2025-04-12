@@ -10,20 +10,50 @@
 #include <functional>
 #include "gpupixel/source/source.h"
 #include "gpupixel/filter/filter.h"
+#include "gpupixel/core/gpupixel_program.h"
+
 namespace gpupixel {
 class GPUPIXEL_API SourceRawData : public Filter {
  public:
-  virtual ~SourceRawData() = default;
-  
-  static std::shared_ptr<SourceRawData> Create();
+ static std::shared_ptr<SourceRawData> Create();
 
-  virtual void ProcessData(const uint8_t* data,
+  ~SourceRawData() override;
+  
+  void ProcessData(const uint8_t* data,
                    int width,
                    int height,
                    int stride,
-                   GPUPIXEL_FRAME_TYPE type) = 0;
+                   GPUPIXEL_FRAME_TYPE type);
 
-  virtual void SetRotation(RotationMode rotation) = 0;
+  void SetRotation(RotationMode rotation);
+  
+  bool Init();
+
+ private:
+  SourceRawData();
+  int GenerateTextureWithI420(int width,
+                              int height,
+                              const uint8_t* dataY,
+                              int strideY,
+                              const uint8_t* dataU,
+                              int strideU,
+                              const uint8_t* dataV,
+                              int strideV);
+
+  int GenerateTextureWithPixels(const uint8_t* pixels,
+                                int width,
+                                int height,
+                                int stride,
+                                GPUPIXEL_FRAME_TYPE type);
+
+ private:
+  GPUPixelGLProgram* filter_program_;
+  uint32_t filter_position_attribute_;
+  uint32_t filter_tex_coord_attribute_;
+
+  uint32_t textures_[4] = {0};
+  RotationMode rotation_ = NoRotation;
+  std::shared_ptr<GPUPixelFramebuffer> framebuffer_;
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

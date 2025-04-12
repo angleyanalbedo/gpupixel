@@ -248,10 +248,10 @@ std::string GaussianBlurMonoFilter::GenerateOptimizedVertexShaderString(
   float* optimizedGaussianOffsets = new float[numberOfOptimizedOffsets];
 
   for (int i = 0; i < numberOfOptimizedOffsets; ++i) {
-    GLfloat firstWeight = standardGaussianWeights[i * 2 + 1];
-    GLfloat secondWeight = standardGaussianWeights[i * 2 + 2];
+    float firstWeight = standardGaussianWeights[i * 2 + 1];
+    float secondWeight = standardGaussianWeights[i * 2 + 2];
 
-    GLfloat optimizedWeight = firstWeight + secondWeight;
+    float optimizedWeight = firstWeight + secondWeight;
 
     optimizedGaussianOffsets[i] =
         (firstWeight * (i * 2 + 1) + secondWeight * (i * 2 + 2)) /

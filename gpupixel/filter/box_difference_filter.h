@@ -24,8 +24,8 @@ class GPUPIXEL_API BoxDifferenceFilter : public Filter {
  protected:
   BoxDifferenceFilter();
   float delta_;
-  GLuint filter_texture_coordinate_attribute_;
-  GLuint filter_texture_coordinate_attribute2_;
+ uint32_t filter_texture_coordinate_attribute_;
+ uint32_t filter_texture_coordinate_attribute2_;
 };
 
 }  // namespace gpupixel

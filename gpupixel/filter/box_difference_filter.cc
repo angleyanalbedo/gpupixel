@@ -84,7 +84,7 @@ bool BoxDifferenceFilter::Init() {
 }
 
 bool BoxDifferenceFilter::DoRender(bool updateSinks) {
-  static const GLfloat imageVertices[] = {
+  static const float imageVertices[] = {
       -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
   };
 

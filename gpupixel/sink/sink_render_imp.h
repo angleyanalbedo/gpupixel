@@ -32,9 +32,9 @@ class GPUPIXEL_API SinkRenderImpl : public SinkRender {
   FillMode fill_mode_;
   bool mirror_ = false;
   GPUPixelGLProgram* display_program_;
-  GLuint position_attribute_location_;
-  GLuint tex_coord_attribute_location_;
-  GLuint color_map_uniform_location_;
+  uint32_t position_attribute_location_;
+  uint32_t tex_coord_attribute_location_;
+  uint32_t color_map_uniform_location_;
   struct {
     float r;
     float g;
@@ -42,10 +42,10 @@ class GPUPIXEL_API SinkRenderImpl : public SinkRender {
     float a;
   } background_color_;
 
-  GLfloat display_vertices_[8];
+  float display_vertices_[8];
 
   void UpdateDisplayVertices();
-  const GLfloat* GetTextureCoordinate(RotationMode rotation_mode);
+  const float* GetTextureCoordinate(RotationMode rotation_mode);
 };
 
 }  // namespace gpupixel 

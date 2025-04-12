@@ -27,8 +27,8 @@ class GPUPIXEL_API NearbySampling3x3Filter : public Filter {
   NearbySampling3x3Filter() {};
 
   float texel_size_multiplier_;
-  GLuint texel_width_uniform_;
-  GLuint texel_height_uniform_;
+ uint32_t texel_width_uniform_;
+ uint32_t texel_height_uniform_;
 };
 
 }  // namespace gpupixel

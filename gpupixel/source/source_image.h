@@ -8,15 +8,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "gpupixel/source/source.h"
-
 namespace gpupixel {
 class GPUPIXEL_API SourceImage : public Source {
  public:
-  virtual ~SourceImage() = default;
-
-  static std::shared_ptr<SourceImage> Create(const std::string name);
+   static std::shared_ptr<SourceImage> Create(const std::string name);
 
   static std::shared_ptr<SourceImage> CreateFromBuffer(
       int width,
@@ -24,11 +22,26 @@ class GPUPIXEL_API SourceImage : public Source {
       int channel_count,
       const unsigned char* pixels);
 
-  virtual const unsigned char* GetRgbaImageBuffer() const = 0;
-  virtual int GetWidth() const = 0;
-  virtual int GetHeight() const = 0;
 
-  virtual void Render() = 0;
+  ~SourceImage() {};
+
+  const unsigned char* GetRgbaImageBuffer() const;
+  int GetWidth() const;
+  int GetHeight() const;
+
+  void Render();
+
+  void Init(int width,
+            int height,
+            int channel_count,
+            const unsigned char* pixels);
+
+#if defined(GPUPIXEL_ANDROID)
+  static std::shared_ptr<SourceImage> CreateImageForAndroid(std::string name);
+#endif
+  std::vector<unsigned char> image_bytes_;
+  private:
+  SourceImage() {}
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

@@ -5,7 +5,7 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel/filter/face_reshape_filter_impl.h"
+#include "gpupixel/filter/face_reshape_filter.h"
 #include "gpupixel/core/gpupixel_context.h"
 namespace gpupixel {
 
@@ -207,12 +207,12 @@ const std::string kGPUPixelThinFaceFragmentShaderString = R"(
  )";
 #endif
 
-FaceReshapeFilterImpl::FaceReshapeFilterImpl() {}
+FaceReshapeFilter::FaceReshapeFilter() {}
 
-FaceReshapeFilterImpl::~FaceReshapeFilterImpl() {}
+FaceReshapeFilter::~FaceReshapeFilter() {}
 
 std::shared_ptr<FaceReshapeFilter> FaceReshapeFilter::Create() {
-  auto ret = std::shared_ptr<FaceReshapeFilterImpl>(new FaceReshapeFilterImpl());
+  auto ret = std::shared_ptr<FaceReshapeFilter>(new FaceReshapeFilter());
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext([&] {
     if (ret && !ret->Init()) {
       ret.reset();
@@ -221,7 +221,7 @@ std::shared_ptr<FaceReshapeFilter> FaceReshapeFilter::Create() {
   return ret;
 }
 
-bool FaceReshapeFilterImpl::Init() {
+bool FaceReshapeFilter::Init() {
   if (!InitWithFragmentShaderString(kGPUPixelThinFaceFragmentShaderString)) {
     return false;
   }
@@ -244,7 +244,7 @@ bool FaceReshapeFilterImpl::Init() {
   return true;
 }
 
-void FaceReshapeFilterImpl::SetFaceLandmarks(std::vector<float> landmarks) {
+void FaceReshapeFilter::SetFaceLandmarks(std::vector<float> landmarks) {
   if (landmarks.size() == 0) {
     has_face_ = false;
     return;
@@ -254,7 +254,7 @@ void FaceReshapeFilterImpl::SetFaceLandmarks(std::vector<float> landmarks) {
   has_face_ = true;
 }
 
-bool FaceReshapeFilterImpl::DoRender(bool updateSinks) {
+bool FaceReshapeFilter::DoRender(bool updateSinks) {
   float aspect = (float)framebuffer_->GetWidth() / framebuffer_->GetHeight();
   filter_program_->SetUniformValue("aspectRatio", aspect);
 
@@ -271,12 +271,12 @@ bool FaceReshapeFilterImpl::DoRender(bool updateSinks) {
 }
 
 #pragma mark - face slim
-void FaceReshapeFilterImpl::SetFaceSlimLevel(float level) {
+void FaceReshapeFilter::SetFaceSlimLevel(float level) {
   thin_face_delta_ = level;
 }
 
 #pragma mark - eye zoom
-void FaceReshapeFilterImpl::SetEyeZoomLevel(float level) {
+void FaceReshapeFilter::SetEyeZoomLevel(float level) {
   big_eye_delta_ = level;
 }
 

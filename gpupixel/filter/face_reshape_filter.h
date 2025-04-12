@@ -13,13 +13,22 @@ namespace gpupixel {
 class GPUPIXEL_API FaceReshapeFilter : public Filter {
  public:
   static std::shared_ptr<FaceReshapeFilter> Create();
-  virtual ~FaceReshapeFilter() = default;
-  virtual bool Init() = 0;
-  virtual bool DoRender(bool updateSinks = true) = 0;
+  FaceReshapeFilter();
+  ~FaceReshapeFilter();
+  
+  bool Init() ;
+  bool DoRender(bool updateSinks = true) override;
 
-  virtual void SetFaceSlimLevel(float level) = 0;
-  virtual void SetEyeZoomLevel(float level) = 0;
-  virtual void SetFaceLandmarks(std::vector<float> landmarks) = 0;
+  void SetFaceSlimLevel(float level);
+  void SetEyeZoomLevel(float level);
+  void SetFaceLandmarks(std::vector<float> landmarks);
+
+ private:
+  float thin_face_delta_ = 0.0;
+  float big_eye_delta_ = 0.0;
+
+  std::vector<float> face_landmarks_;
+  int has_face_ = 0;
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

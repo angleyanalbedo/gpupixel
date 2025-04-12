@@ -158,7 +158,7 @@ std::string Filter::GetVertexShaderString(int input_number) const {
 }
 
 bool Filter::DoRender(bool update_sinks) {
-  static const GLfloat image_vertices[] = {
+  static const float image_vertices[] = {
       -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
   };
 
@@ -179,7 +179,7 @@ bool Filter::DoRender(bool update_sinks) {
                      : Util::str_format("inputImageTexture%d", tex_idx),
         tex_idx);
     // texcoord attribute
-    GLuint filter_tex_coord_attribute = filter_program_->GetAttribLocation(
+   uint32_t filter_tex_coord_attribute = filter_program_->GetAttribLocation(
         tex_idx == 0 ? "inputTextureCoordinate"
                      : Util::str_format("inputTextureCoordinate%d", tex_idx));
     CHECK_GL(glEnableVertexAttribArray(filter_tex_coord_attribute));
@@ -196,37 +196,37 @@ bool Filter::DoRender(bool update_sinks) {
   return Source::DoRender(update_sinks);
 }
 
-const GLfloat* Filter::GetTextureCoordinate(
+const float* Filter::GetTextureCoordinate(
     const RotationMode& rotation_mode) const {
-  static const GLfloat no_rotation_texture_coordinates[] = {
+  static const float no_rotation_texture_coordinates[] = {
       0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
   };
 
-  static const GLfloat rotate_left_texture_coordinates[] = {
+  static const float rotate_left_texture_coordinates[] = {
       1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
   };
 
-  static const GLfloat rotate_right_texture_coordinates[] = {
+  static const float rotate_right_texture_coordinates[] = {
       0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f,
   };
 
-  static const GLfloat vertical_flip_texture_coordinates[] = {
+  static const float vertical_flip_texture_coordinates[] = {
       0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
   };
 
-  static const GLfloat horizontal_flip_texture_coordinates[] = {
+  static const float horizontal_flip_texture_coordinates[] = {
       1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
   };
 
-  static const GLfloat rotate_right_vertical_flip_texture_coordinates[] = {
+  static const float rotate_right_vertical_flip_texture_coordinates[] = {
       0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
   };
 
-  static const GLfloat rotate_right_horizontal_flip_texture_coordinates[] = {
+  static const float rotate_right_horizontal_flip_texture_coordinates[] = {
       1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
   };
 
-  static const GLfloat rotate_180_texture_coordinates[] = {
+  static const float rotate_180_texture_coordinates[] = {
       1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
   };
 

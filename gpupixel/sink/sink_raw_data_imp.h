@@ -46,8 +46,8 @@ class GPUPIXEL_API SinkRawDataImpl : public SinkRawData {
  private:
   std::mutex mutex_;
   GPUPixelGLProgram* shader_program_;
-  GLuint position_attribute_;
-  GLuint tex_coord_attribute_;
+  uint32_t position_attribute_;
+  uint32_t tex_coord_attribute_;
 
   std::shared_ptr<GPUPixelFramebuffer> framebuffer_;
 

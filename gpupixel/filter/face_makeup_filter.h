@@ -35,8 +35,8 @@ class GPUPIXEL_API FaceMakeupFilter : public Filter {
   void SetTextureBounds(FrameBounds bounds) { texture_bounds_ = bounds; }
 
  private:
-  std::vector<GLuint> GetFaceIndexs();
-  std::vector<GLfloat> FaceTextureCoordinates();
+  std::vector<uint32_t> GetFaceIndexs();
+  std::vector<float> FaceTextureCoordinates();
 
  private:
   std::vector<float> face_landmarks_;
@@ -44,9 +44,9 @@ class GPUPIXEL_API FaceMakeupFilter : public Filter {
   bool has_face_ = false;
   //
   GPUPixelGLProgram* filter_program2_ = nullptr;
-  GLuint filter_position_attribute2_ = 0;
-  GLuint filter_tex_coord_attribute_ = 0;
-  GLuint filter_tex_coord_attribute2_ = 0;
+ uint32_t filter_position_attribute2_ = 0;
+ uint32_t filter_tex_coord_attribute_ = 0;
+ uint32_t filter_tex_coord_attribute2_ = 0;
 
   FrameBounds texture_bounds_;
   std::shared_ptr<SourceImage> image_texture_;

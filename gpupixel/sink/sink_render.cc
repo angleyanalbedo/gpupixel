@@ -5,7 +5,7 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel/sink/sink_render_imp.h"
+#include "gpupixel/sink/sink_render.h"
 #include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/utils/util.h"
@@ -13,13 +13,13 @@
 namespace gpupixel {
 
 std::shared_ptr<SinkRender> SinkRender::Create() {
-  auto ret = std::shared_ptr<SinkRenderImpl>(new SinkRenderImpl());
+  auto ret = std::shared_ptr<SinkRender>(new SinkRender());
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext(
       [&] { ret->Init(); });
   return ret;
 }
 
-SinkRenderImpl::SinkRenderImpl()
+SinkRender::SinkRender()
     : view_width_(0),
       view_height_(0),
       fill_mode_(FillMode::PreserveAspectRatio),
@@ -33,14 +33,14 @@ SinkRenderImpl::SinkRenderImpl()
   background_color_.a = 0.0;
 }
 
-SinkRenderImpl::~SinkRenderImpl() {
+SinkRender::~SinkRender() {
   if (display_program_) {
     delete display_program_;
     display_program_ = 0;
   }
 }
 
-void SinkRenderImpl::Init() {
+void SinkRender::Init() {
   display_program_ = GPUPixelGLProgram::CreateWithShaderString(
       kDefaultVertexShader, kDefaultFragmentShader);
   position_attribute_location_ =
@@ -54,7 +54,7 @@ void SinkRenderImpl::Init() {
   CHECK_GL(glEnableVertexAttribArray(tex_coord_attribute_location_));
 };
 
-void SinkRenderImpl::SetInputFramebuffer(
+void SinkRender::SetInputFramebuffer(
     std::shared_ptr<GPUPixelFramebuffer> framebuffer,
     RotationMode rotation_mode /* = NoRotation*/,
     int tex_idx /* = 0*/) {
@@ -76,20 +76,20 @@ void SinkRenderImpl::SetInputFramebuffer(
   }
 }
 
-void SinkRenderImpl::SetFillMode(FillMode fill_mode) {
+void SinkRender::SetFillMode(FillMode fill_mode) {
   if (fill_mode_ != fill_mode) {
     fill_mode_ = fill_mode;
     UpdateDisplayVertices();
   }
 }
 
-void SinkRenderImpl::SetMirror(bool mirror) {
+void SinkRender::SetMirror(bool mirror) {
   if (mirror_ != mirror) {
     mirror_ = mirror;
   }
 }
 
-void SinkRenderImpl::SetRenderSize(int width, int height) {
+void SinkRender::SetRenderSize(int width, int height) {
   if (view_width_ != width || view_height_ != height) {
     view_width_ = width;
     view_height_ = height;
@@ -97,7 +97,7 @@ void SinkRenderImpl::SetRenderSize(int width, int height) {
   }
 }
 
-void SinkRenderImpl::Render() {
+void SinkRender::Render() {
   CHECK_GL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
   CHECK_GL(glViewport(0, 0, view_width_, view_height_));
@@ -117,7 +117,7 @@ void SinkRenderImpl::Render() {
   CHECK_GL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 }
 
-void SinkRenderImpl::UpdateDisplayVertices() {
+void SinkRender::UpdateDisplayVertices() {
   if (input_framebuffers_.find(0) == input_framebuffers_.end() ||
       input_framebuffers_[0].frame_buffer == 0) {
     return;
@@ -170,7 +170,7 @@ void SinkRenderImpl::UpdateDisplayVertices() {
   display_vertices_[7] = scaled_height;
 }
 
-const float* SinkRenderImpl::GetTextureCoordinate(RotationMode rotation_mode) {
+const float* SinkRender::GetTextureCoordinate(RotationMode rotation_mode) {
   static const float no_rotation_texture_coordinates[] = {
       0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
   };
@@ -228,4 +228,4 @@ const float* SinkRenderImpl::GetTextureCoordinate(RotationMode rotation_mode) {
   }
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

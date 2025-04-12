@@ -6,7 +6,7 @@
 //  Copyright © 2021 PixPark. All rights reserved.
 //
 
-#include "gpupixel/sink/sink_raw_data_imp.h"
+#include "gpupixel/sink/sink_raw_data.h"
 #include <cstring>
 #include "gpupixel/core/gpupixel_context.h"
 #include "third_party/libyuv/include/libyuv.h"
@@ -41,18 +41,18 @@ const std::string kRGBToI420FragmentShaderString = R"(
 #endif
 
 std::shared_ptr<SinkRawData> SinkRawData::Create() {
-  std::shared_ptr<SinkRawDataImpl> ret;
+  std::shared_ptr<SinkRawData> ret;
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext(
-      [&] { ret = std::shared_ptr<SinkRawDataImpl>(new SinkRawDataImpl()); });
+      [&] { ret = std::shared_ptr<SinkRawData>(new SinkRawData()); });
   return ret;
 }
 
-SinkRawDataImpl::SinkRawDataImpl() {
+SinkRawData::SinkRawData() {
   InitWithShaderString(kRGBToI420VertexShaderString,
                        kRGBToI420FragmentShaderString);
 }
 
-SinkRawDataImpl::~SinkRawDataImpl() {
+SinkRawData::~SinkRawData() {
   // Clean up RGBA frame buffer
   if (rgba_buffer_ != nullptr) {
     delete[] rgba_buffer_;
@@ -66,7 +66,7 @@ SinkRawDataImpl::~SinkRawDataImpl() {
   yuv_buffer_ = nullptr;
 }
 
-void SinkRawDataImpl::Render() {
+void SinkRawData::Render() {
   if (input_framebuffers_.empty()) {
     return;
   }
@@ -118,7 +118,7 @@ void SinkRawDataImpl::Render() {
   framebuffer_->Deactivate();
 }
 
-bool SinkRawDataImpl::InitWithShaderString(
+bool SinkRawData::InitWithShaderString(
     const std::string& vertex_shader_source,
     const std::string& fragment_shader_source) {
   shader_program_ = GPUPixelGLProgram::CreateWithShaderString(
@@ -131,7 +131,7 @@ bool SinkRawDataImpl::InitWithShaderString(
   return true;
 }
 
-int SinkRawDataImpl::RenderToOutput() {
+int SinkRawData::RenderToOutput() {
   framebuffer_->Activate();
 
   // Read pixel data directly using glReadPixels
@@ -142,13 +142,13 @@ int SinkRawDataImpl::RenderToOutput() {
   return 0;
 }
 
-const uint8_t* SinkRawDataImpl::GetRgbaBuffer() {
+const uint8_t* SinkRawData::GetRgbaBuffer() {
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext(
       [&] { RenderToOutput(); });
   return rgba_buffer_;
 }
 
-const uint8_t* SinkRawDataImpl::GetI420Buffer() {
+const uint8_t* SinkRawData::GetI420Buffer() {
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext(
       [=] { RenderToOutput(); });
 
@@ -161,7 +161,7 @@ const uint8_t* SinkRawDataImpl::GetI420Buffer() {
   return yuv_buffer_;
 }
 
-void SinkRawDataImpl::InitOutputBuffer(int width, int height) {
+void SinkRawData::InitOutputBuffer(int width, int height) {
   uint32_t rgba_size = width * height * 4;
   uint32_t yuv_size = width * height * 3 / 2;
 
@@ -180,7 +180,7 @@ void SinkRawDataImpl::InitOutputBuffer(int width, int height) {
   std::memset(yuv_buffer_, 0, yuv_size);
 }
 
-void SinkRawDataImpl::InitFramebuffer(int width, int height) {
+void SinkRawData::InitFramebuffer(int width, int height) {
   if (!framebuffer_ || (framebuffer_->GetWidth() != width ||
                         framebuffer_->GetHeight() != height)) {
     framebuffer_ = GPUPixelContext::GetInstance()
@@ -189,4 +189,4 @@ void SinkRawDataImpl::InitFramebuffer(int width, int height) {
   }
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

@@ -22,10 +22,10 @@ class GPUPIXEL_API GPUPixelGLProgram {
       const std::string& vertex_shader_source,
       const std::string& fragment_shader_source);
   void UseProgram();
-  GLuint GetProgram() const { return program_; }
+  uint32_t GetProgram() const { return program_; }
 
-  GLuint GetAttribLocation(const std::string& attribute);
-  GLuint GetUniformLocation(const std::string& uniform_name);
+  uint32_t GetAttribLocation(const std::string& attribute);
+  uint32_t GetUniformLocation(const std::string& uniform_name);
 
   void SetUniformValue(const std::string& uniform_name, int value);
   void SetUniformValue(const std::string& uniform_name, float value);
@@ -46,7 +46,7 @@ class GPUPIXEL_API GPUPixelGLProgram {
 
  private:
   static std::vector<GPUPixelGLProgram*> programs_;
-  GLuint program_;
+  uint32_t program_;
   bool InitWithShaderString(const std::string& vertex_shader_source,
                             const std::string& fragment_shader_source);
 };

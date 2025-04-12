@@ -5,7 +5,7 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel/source/source_raw_data_imp.h"
+#include "gpupixel/source/source_raw_data.h"
 #include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/utils/util.h"
 
@@ -71,7 +71,7 @@ const std::string kI420FragmentShaderString = R"(
 #endif
 
 std::shared_ptr<SourceRawData> SourceRawData::Create() {
-  auto ret = std::shared_ptr<SourceRawDataImpl>(new SourceRawDataImpl());
+  auto ret = std::shared_ptr<SourceRawData>(new SourceRawData());
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext([&] {
     if (!ret->Init()) {
       return ret.reset();
@@ -80,14 +80,14 @@ std::shared_ptr<SourceRawData> SourceRawData::Create() {
   return ret;
 }
 
-SourceRawDataImpl::SourceRawDataImpl() {}
+SourceRawData::SourceRawData() {}
 
-SourceRawDataImpl::~SourceRawDataImpl() {
+SourceRawData::~SourceRawData() {
   GPUPixelContext::GetInstance()->SyncRunWithContext(
       [=] { glDeleteTextures(4, textures_); });
 }
 
-bool SourceRawDataImpl::Init() {
+bool SourceRawData::Init() {
   filter_program_ = GPUPixelGLProgram::CreateWithShaderString(
       kI420VertexShaderString, kI420FragmentShaderString);
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
@@ -118,11 +118,11 @@ bool SourceRawDataImpl::Init() {
   return true;
 }
 
-void SourceRawDataImpl::SetRotation(RotationMode rotation) {
+void SourceRawData::SetRotation(RotationMode rotation) {
   rotation_ = rotation;
 }
 
-void SourceRawDataImpl::ProcessData(const uint8_t* data,
+void SourceRawData::ProcessData(const uint8_t* data,
                                 int width,
                                 int height,
                                 int stride,
@@ -150,7 +150,7 @@ void SourceRawDataImpl::ProcessData(const uint8_t* data,
   });
 }
 
-int SourceRawDataImpl::GenerateTextureWithI420(int width,
+int SourceRawData::GenerateTextureWithI420(int width,
                                            int height,
                                            const uint8_t* dataY,
                                            int strideY,
@@ -170,7 +170,7 @@ int SourceRawDataImpl::GenerateTextureWithI420(int width,
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
   this->GetFramebuffer()->Activate();
 
-  GLfloat imageVertices[]{
+  float imageVertices[]{
       -1.0, -1.0,  // left down
       1.0,  -1.0,  // right down
       -1.0, 1.0,   // left up
@@ -205,7 +205,7 @@ int SourceRawDataImpl::GenerateTextureWithI420(int width,
   return 0;
 }
 
-int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
+int SourceRawData::GenerateTextureWithPixels(const uint8_t* pixels,
                                              int width,
                                              int height,
                                              int stride,
@@ -218,7 +218,7 @@ int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
   }
   this->SetFramebuffer(framebuffer_, NoRotation);
 
-  GLuint texture = textures_[3];
+  uint32_t texture = textures_[3];
   CHECK_GL(glBindTexture(GL_TEXTURE_2D, texture));
 
   if (type == GPUPIXEL_FRAME_TYPE_BGRA) {
@@ -234,7 +234,7 @@ int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
   this->GetFramebuffer()->Activate();
 
-  GLfloat imageVertices[]{
+  float imageVertices[]{
       -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
   };
 

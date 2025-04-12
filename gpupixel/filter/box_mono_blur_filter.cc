@@ -87,7 +87,7 @@ std::string BoxMonoBlurFilter::GenerateOptimizedVertexShaderString(
   for (uint32_t currentOptimizedOffset = 0;
        currentOptimizedOffset < numberOfOptimizedOffsets;
        currentOptimizedOffset++) {
-    GLfloat optimizedOffset = (GLfloat)(currentOptimizedOffset * 2) + 1.5;
+    float optimizedOffset = (float)(currentOptimizedOffset * 2) + 1.5;
 
     shaderStr += Util::str_format(
         "\
@@ -146,7 +146,7 @@ std::string BoxMonoBlurFilter::GenerateOptimizedFragmentShaderString(
           1 + (numberOfOptimizedOffsets * 2));
 #endif
 
-  GLfloat boxWeight = 1.0 / (GLfloat)((radius * 2) + 1);
+  float boxWeight = 1.0 / (float)((radius * 2) + 1);
 
   // Inner texture loop
   shaderStr += Util::str_format(
@@ -180,7 +180,7 @@ std::string BoxMonoBlurFilter::GenerateOptimizedFragmentShaderString(
     for (uint32_t currentOverlowTextureRead = numberOfOptimizedOffsets;
          currentOverlowTextureRead < trueNumberOfOptimizedOffsets;
          currentOverlowTextureRead++) {
-      GLfloat optimizedOffset = (GLfloat)(currentOverlowTextureRead * 2) + 1.5;
+      float optimizedOffset = (float)(currentOverlowTextureRead * 2) + 1.5;
 
       shaderStr += Util::str_format(
           "sum += texture2D(inputImageTexture, blurCoordinates[0] + "
