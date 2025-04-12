@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "gpupixel/core/gpupixel_define.h"
+
 #if defined(GPUPIXEL_IOS)
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
