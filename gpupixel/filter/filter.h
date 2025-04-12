@@ -122,7 +122,7 @@ class GPUPIXEL_API Filter : public Source, public Sink {
 
  protected:
   GPUPixelGLProgram* filter_program_;
- uint32_t filter_position_attribute_;
+  uint32_t filter_position_attribute_;
   std::string filter_class_name_;
   struct {
     float r;

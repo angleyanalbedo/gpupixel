@@ -24,13 +24,13 @@ class GPUPIXEL_API FaceDetectorImpl : public FaceDetector {
   ~FaceDetectorImpl() override;
 
   std::vector<float> Detect(const uint8_t* data,
-                           int width,
-                           int height,
-                           int stride,
-                           GPUPIXEL_MODE_FMT fmt,
-                           GPUPIXEL_FRAME_TYPE type) override;
+                            int width,
+                            int height,
+                            int stride,
+                            GPUPIXEL_MODE_FMT fmt,
+                            GPUPIXEL_FRAME_TYPE type) override;
 
  private:
   std::shared_ptr<mars_face_kit::MarsFaceDetector> mars_face_detector_;
 };
-}  // namespace gpupixel 
+}  // namespace gpupixel

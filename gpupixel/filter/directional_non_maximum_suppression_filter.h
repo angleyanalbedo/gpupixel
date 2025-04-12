@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_define.h"
+#include "gpupixel/filter/filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API DirectionalNonMaximumSuppressionFilter : public Filter {
@@ -19,8 +19,8 @@ class GPUPIXEL_API DirectionalNonMaximumSuppressionFilter : public Filter {
   virtual bool DoRender(bool updateSinks = true) override;
 
  protected:
- uint32_t texel_width_uniform_;
- uint32_t texel_height_uniform_;
+  uint32_t texel_width_uniform_;
+  uint32_t texel_height_uniform_;
   DirectionalNonMaximumSuppressionFilter() {};
 };
 

@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/android/jni/jni_helpers.h"
+#include "gpupixel/filter/filter.h"
 
 using namespace gpupixel;
 

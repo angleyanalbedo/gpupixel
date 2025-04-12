@@ -15,8 +15,8 @@ class GPUPIXEL_API FaceReshapeFilter : public Filter {
   static std::shared_ptr<FaceReshapeFilter> Create();
   FaceReshapeFilter();
   ~FaceReshapeFilter();
-  
-  bool Init() ;
+
+  bool Init();
   bool DoRender(bool updateSinks = true) override;
 
   void SetFaceSlimLevel(float level);
@@ -31,4 +31,4 @@ class GPUPIXEL_API FaceReshapeFilter : public Filter {
   int has_face_ = 0;
 };
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

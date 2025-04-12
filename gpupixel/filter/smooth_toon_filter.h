@@ -7,9 +7,9 @@
 
 #pragma once
 
+#include "gpupixel/core/gpupixel_define.h"
 #include "gpupixel/filter/filter_group.h"
 #include "gpupixel/filter/gaussian_blur_filter.h"
-#include "gpupixel/core/gpupixel_define.h"
 #include "gpupixel/filter/toon_filter.h"
 
 namespace gpupixel {

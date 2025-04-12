@@ -20,10 +20,10 @@ class GPUPIXEL_API FaceDetector {
   virtual ~FaceDetector() = default;
 
   virtual std::vector<float> Detect(const uint8_t* data,
-                            int width,
-                            int height,
-                            int stride,
-                            GPUPIXEL_MODE_FMT fmt,
-                            GPUPIXEL_FRAME_TYPE type) = 0;
+                                    int width,
+                                    int height,
+                                    int stride,
+                                    GPUPIXEL_MODE_FMT fmt,
+                                    GPUPIXEL_FRAME_TYPE type) = 0;
 };
 }  // namespace gpupixel

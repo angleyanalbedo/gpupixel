@@ -16,10 +16,10 @@
 namespace gpupixel {
 class GPUPIXEL_API BeautyFaceFilter : public FilterGroup {
  public:
-   static std::shared_ptr<BeautyFaceFilter> Create();
+  static std::shared_ptr<BeautyFaceFilter> Create();
 
   ~BeautyFaceFilter();
-  
+
   bool Init();
 
   void SetHighPassDelta(float highPassDelta);
@@ -34,10 +34,10 @@ class GPUPIXEL_API BeautyFaceFilter : public FilterGroup {
       int texIdx = 0) override;
 
  private:
-   BeautyFaceFilter();
+  BeautyFaceFilter();
   std::shared_ptr<BoxBlurFilter> box_blur_filter_;
   std::shared_ptr<BoxHighPassFilter> box_high_pass_filter_;
   std::shared_ptr<BeautyFaceUnitFilter> beauty_face_filter_;
 };
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

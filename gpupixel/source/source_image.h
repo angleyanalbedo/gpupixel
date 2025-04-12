@@ -14,14 +14,13 @@
 namespace gpupixel {
 class GPUPIXEL_API SourceImage : public Source {
  public:
-   static std::shared_ptr<SourceImage> Create(const std::string name);
+  static std::shared_ptr<SourceImage> Create(const std::string name);
 
   static std::shared_ptr<SourceImage> CreateFromBuffer(
       int width,
       int height,
       int channel_count,
       const unsigned char* pixels);
-
 
   ~SourceImage() {};
 
@@ -40,8 +39,9 @@ class GPUPIXEL_API SourceImage : public Source {
   static std::shared_ptr<SourceImage> CreateImageForAndroid(std::string name);
 #endif
   std::vector<unsigned char> image_bytes_;
-  private:
+
+ private:
   SourceImage() {}
 };
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

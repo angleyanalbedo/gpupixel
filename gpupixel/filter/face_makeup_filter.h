@@ -44,9 +44,9 @@ class GPUPIXEL_API FaceMakeupFilter : public Filter {
   bool has_face_ = false;
   //
   GPUPixelGLProgram* filter_program2_ = nullptr;
- uint32_t filter_position_attribute2_ = 0;
- uint32_t filter_tex_coord_attribute_ = 0;
- uint32_t filter_tex_coord_attribute2_ = 0;
+  uint32_t filter_position_attribute2_ = 0;
+  uint32_t filter_tex_coord_attribute_ = 0;
+  uint32_t filter_tex_coord_attribute2_ = 0;
 
   FrameBounds texture_bounds_;
   std::shared_ptr<SourceImage> image_texture_;

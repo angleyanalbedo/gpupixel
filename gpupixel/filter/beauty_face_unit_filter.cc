@@ -344,7 +344,7 @@ bool BeautyFaceUnitFilter::DoRender(bool updateSinks) {
   filter_program_->SetUniformValue("inputImageTexture3", 4);
 
   // texcoord attribute
- uint32_t filter_tex_coord_attribute =
+  uint32_t filter_tex_coord_attribute =
       filter_program_->GetAttribLocation("inputTextureCoordinate");
   CHECK_GL(glEnableVertexAttribArray(filter_tex_coord_attribute));
   CHECK_GL(glVertexAttribPointer(

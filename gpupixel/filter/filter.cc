@@ -6,8 +6,8 @@
  */
 
 #include "gpupixel/filter/filter.h"
-#include "gpupixel/gpupixel.h"
 #include "gpupixel/core/gpupixel_context.h"
+#include "gpupixel/gpupixel.h"
 #include "gpupixel/utils/util.h"
 namespace gpupixel {
 
@@ -179,7 +179,7 @@ bool Filter::DoRender(bool update_sinks) {
                      : Util::str_format("inputImageTexture%d", tex_idx),
         tex_idx);
     // texcoord attribute
-   uint32_t filter_tex_coord_attribute = filter_program_->GetAttribLocation(
+    uint32_t filter_tex_coord_attribute = filter_program_->GetAttribLocation(
         tex_idx == 0 ? "inputTextureCoordinate"
                      : Util::str_format("inputTextureCoordinate%d", tex_idx));
     CHECK_GL(glEnableVertexAttribArray(filter_tex_coord_attribute));

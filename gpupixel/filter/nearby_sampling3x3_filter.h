@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_define.h"
+#include "gpupixel/filter/filter.h"
 
 namespace gpupixel {
 GPUPIXEL_API extern const std::string
@@ -27,8 +27,8 @@ class GPUPIXEL_API NearbySampling3x3Filter : public Filter {
   NearbySampling3x3Filter() {};
 
   float texel_size_multiplier_;
- uint32_t texel_width_uniform_;
- uint32_t texel_height_uniform_;
+  uint32_t texel_width_uniform_;
+  uint32_t texel_height_uniform_;
 };
 
 }  // namespace gpupixel

@@ -11,8 +11,8 @@
 #include "gpupixel/core/gpupixel_define.h"
 #include "gpupixel/core/gpupixel_framebuffer_factory.h"
 
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_program.h"
+#include "gpupixel/filter/filter.h"
 
 class DispatchQueue;
 

@@ -8,17 +8,17 @@
 #pragma once
 
 #include <functional>
-#include "gpupixel/source/source.h"
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_program.h"
+#include "gpupixel/filter/filter.h"
+#include "gpupixel/source/source.h"
 
 namespace gpupixel {
 class GPUPIXEL_API SourceRawData : public Filter {
  public:
- static std::shared_ptr<SourceRawData> Create();
+  static std::shared_ptr<SourceRawData> Create();
 
   ~SourceRawData() override;
-  
+
   void ProcessData(const uint8_t* data,
                    int width,
                    int height,
@@ -26,7 +26,7 @@ class GPUPIXEL_API SourceRawData : public Filter {
                    GPUPIXEL_FRAME_TYPE type);
 
   void SetRotation(RotationMode rotation);
-  
+
   bool Init();
 
  private:
@@ -56,4 +56,4 @@ class GPUPIXEL_API SourceRawData : public Filter {
   std::shared_ptr<GPUPixelFramebuffer> framebuffer_;
 };
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

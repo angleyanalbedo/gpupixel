@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel/filter/filter_group.h"
 #include "gpupixel/core/gpupixel_define.h"
+#include "gpupixel/filter/filter_group.h"
 #include "gpupixel/filter/grayscale_filter.h"
 #include "gpupixel/filter/nearby_sampling3x3_filter.h"
 

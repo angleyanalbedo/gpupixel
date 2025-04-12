@@ -44,7 +44,7 @@ class GPUPIXEL_API SinkRawData : public Sink {
   void InitOutputBuffer(int width, int height);
 
  private:
-   SinkRawData();
+  SinkRawData();
   std::mutex mutex_;
   GPUPixelGLProgram* shader_program_;
   uint32_t position_attribute_;
@@ -63,4 +63,4 @@ class GPUPIXEL_API SinkRawData : public Sink {
   uint8_t* yuv_buffer_ = nullptr;   // YUV buffer
 };
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

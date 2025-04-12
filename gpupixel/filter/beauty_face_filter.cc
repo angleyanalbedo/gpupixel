@@ -84,4 +84,4 @@ void BeautyFaceFilter::SetRadius(float radius) {
   box_blur_filter_->SetRadius(radius);
   box_high_pass_filter_->SetRadius(radius);
 }
-}  // namespace gpupixel 
+}  // namespace gpupixel

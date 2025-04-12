@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "gpupixel/core/gpupixel_gl_include.h"
 #include <string>
 #include <vector>
+#include "gpupixel/core/gpupixel_gl_include.h"
 #include "gpupixel/utils/math_toolbox.h"
 
 namespace gpupixel {

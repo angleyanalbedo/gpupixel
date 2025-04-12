@@ -132,7 +132,8 @@ uint32_t GPUPixelGLProgram::GetAttribLocation(const std::string& attribute) {
   return glGetAttribLocation(program_, attribute.c_str());
 }
 
-uint32_t GPUPixelGLProgram::GetUniformLocation(const std::string& uniform_name) {
+uint32_t GPUPixelGLProgram::GetUniformLocation(
+    const std::string& uniform_name) {
   return glGetUniformLocation(program_, uniform_name.c_str());
 }
 

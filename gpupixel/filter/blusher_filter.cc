@@ -30,4 +30,4 @@ bool BlusherFilter::Init() {
   return FaceMakeupFilter::Init();
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

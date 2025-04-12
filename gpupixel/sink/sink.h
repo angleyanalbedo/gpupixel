@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel/core/gpupixel_define.h"
 #include <map>
+#include "gpupixel/core/gpupixel_define.h"
 
 namespace gpupixel {
 GPUPIXEL_API enum RotationMode {

@@ -8,7 +8,6 @@
 
 #pragma once
 
-
 // core
 #include "gpupixel/core/gpupixel_define.h"
 // utils

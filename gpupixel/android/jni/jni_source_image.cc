@@ -3,8 +3,8 @@
 #include <list>
 #include <string>
 
-#include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/android/jni/jni_helpers.h"
+#include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/source/source_image.h"
 
 using namespace gpupixel;

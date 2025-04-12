@@ -10,8 +10,8 @@
 #include <memory>
 #include <vector>
 
-#include "gpupixel/face_detector/face_detector.h"
 #include "gpupixel/android/jni/jni_helpers.h"
+#include "gpupixel/face_detector/face_detector.h"
 
 using namespace gpupixel;
 

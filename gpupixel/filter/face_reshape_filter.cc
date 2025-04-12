@@ -280,4 +280,4 @@ void FaceReshapeFilter::SetEyeZoomLevel(float level) {
   big_eye_delta_ = level;
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

@@ -6,8 +6,8 @@
  */
 
 #include "gpupixel/sink/sink_render.h"
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_context.h"
+#include "gpupixel/filter/filter.h"
 #include "gpupixel/utils/util.h"
 
 namespace gpupixel {
@@ -228,4 +228,4 @@ const float* SinkRender::GetTextureCoordinate(RotationMode rotation_mode) {
   }
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

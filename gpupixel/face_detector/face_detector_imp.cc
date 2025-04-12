@@ -6,8 +6,8 @@
  */
 
 #include "gpupixel/face_detector/face_detector_imp.h"
-#include "third_party/mars-face-kit/include/mars_face_detector.h"
 #include "gpupixel/utils/util.h"
+#include "third_party/mars-face-kit/include/mars_face_detector.h"
 
 namespace gpupixel {
 
@@ -23,11 +23,11 @@ FaceDetectorImpl::FaceDetectorImpl() {
 FaceDetectorImpl::~FaceDetectorImpl() {}
 
 std::vector<float> FaceDetectorImpl::Detect(const uint8_t* data,
-                                        int width,
-                                        int height,
-                                        int stride,
-                                        GPUPIXEL_MODE_FMT fmt,
-                                        GPUPIXEL_FRAME_TYPE type) {
+                                            int width,
+                                            int height,
+                                            int stride,
+                                            GPUPIXEL_MODE_FMT fmt,
+                                            GPUPIXEL_FRAME_TYPE type) {
   mars_face_kit::MarsImage image;
   image.data = (uint8_t*)data;
   image.width = width == stride / 4 ? width : stride / 4;
@@ -105,4 +105,4 @@ std::vector<float> FaceDetectorImpl::Detect(const uint8_t* data,
   return landmarks;
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

@@ -6,11 +6,11 @@
  */
 
 #import "gpupixel/sink/objc/gpupixel_view.h"
-#include "gpupixel/filter/filter.h"
+#import <AVFoundation/AVFoundation.h>
 #include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/core/gpupixel_program.h"
+#include "gpupixel/filter/filter.h"
 #include "gpupixel/utils/util.h"
-#import <AVFoundation/AVFoundation.h>
 
 @interface GPUPixelView () {
   std::shared_ptr<gpupixel::GPUPixelFramebuffer> inputFramebuffer;

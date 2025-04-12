@@ -30,4 +30,4 @@ bool LipstickFilter::Init() {
   return FaceMakeupFilter::Init();
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

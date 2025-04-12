@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_define.h"
+#include "gpupixel/filter/filter.h"
 
 namespace gpupixel {
 class GPUPIXEL_API HueFilter : public Filter {

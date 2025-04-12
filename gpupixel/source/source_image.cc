@@ -90,4 +90,4 @@ int SourceImage::GetHeight() const {
   return 0;
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel
