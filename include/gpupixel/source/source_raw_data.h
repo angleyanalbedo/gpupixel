@@ -9,8 +9,9 @@
 
 #include <functional>
 #include "gpupixel/source/source.h"
+#include "gpupixel/filter/filter.h"
 namespace gpupixel {
-class GPUPIXEL_API SourceRawData : public Source {
+class GPUPIXEL_API SourceRawData : public Filter {
  public:
   virtual ~SourceRawData() = default;
   

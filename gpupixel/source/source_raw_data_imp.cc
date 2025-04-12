@@ -165,10 +165,10 @@ int SourceRawDataImpl::GenerateTextureWithI420(int width,
                        ->CreateFramebuffer(width, height);
   }
 
-  this->Filter::SetFramebuffer(framebuffer_, NoRotation);
+  this->SetFramebuffer(framebuffer_, NoRotation);
 
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
-  this->Filter::GetFramebuffer()->Activate();
+  this->GetFramebuffer()->Activate();
 
   GLfloat imageVertices[]{
       -1.0, -1.0,  // left down
@@ -199,9 +199,9 @@ int SourceRawDataImpl::GenerateTextureWithI420(int width,
   filter_program_->SetUniformValue("texture_type", 0);
   // draw frame buffer
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  this->Filter::GetFramebuffer()->Deactivate();
+  this->GetFramebuffer()->Deactivate();
 
-  Filter::DoRender(true);
+  Source::DoRender(true);
   return 0;
 }
 
@@ -216,7 +216,7 @@ int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
                        ->GetFramebufferFactory()
                        ->CreateFramebuffer(stride / 4, height);
   }
-  this->Filter::SetFramebuffer(framebuffer_, NoRotation);
+  this->SetFramebuffer(framebuffer_, NoRotation);
 
   GLuint texture = textures_[3];
   CHECK_GL(glBindTexture(GL_TEXTURE_2D, texture));
@@ -232,7 +232,7 @@ int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
   }
 
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
-  this->Filter::GetFramebuffer()->Activate();
+  this->GetFramebuffer()->Activate();
 
   GLfloat imageVertices[]{
       -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
@@ -248,15 +248,16 @@ int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
   CHECK_GL(glVertexAttribPointer(filter_tex_coord_attribute_, 2, GL_FLOAT, 0, 0,
                                  GetTextureCoordinate(rotation_)));
 
-  filter_program_->SetUniformValue("inputImageTexture", 3);
-  glActiveTexture(GL_TEXTURE3);
-  glBindTexture(GL_TEXTURE_2D, texture);
+  CHECK_GL(glActiveTexture(GL_TEXTURE4));
+  CHECK_GL(glBindTexture(GL_TEXTURE_2D, texture));
+  filter_program_->SetUniformValue("inputImageTexture", 4);
 
+  // draw frame buffer
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  this->Filter::GetFramebuffer()->Deactivate();
+  this->GetFramebuffer()->Deactivate();
 
-  Filter::DoRender(true);
+  Source::DoRender(true);
   return 0;
 }
 
-}  // namespace gpupixel 
+}  // namespace gpupixel

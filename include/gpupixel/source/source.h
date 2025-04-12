@@ -16,8 +16,6 @@
 #endif
 
 namespace gpupixel {
-class GPUPIXEL_API Filter;
-
 class GPUPIXEL_API Source {
  public:
   Source();

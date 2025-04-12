@@ -10,10 +10,9 @@
 #include <functional>
 #include "gpupixel/source/source_raw_data.h"
 #include "gpupixel/core/gpupixel_program.h"
-#include "gpupixel/filter/filter.h"
 
 namespace gpupixel {
-class GPUPIXEL_API SourceRawDataImpl : public SourceRawData, public Filter {
+class GPUPIXEL_API SourceRawDataImpl : public SourceRawData {
  public:
   SourceRawDataImpl();
   ~SourceRawDataImpl() override;
