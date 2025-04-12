@@ -27,24 +27,19 @@ cmake -G Xcode -B build -S src -DCMAKE_TOOLCHAIN_FILE=../toolchain/ios.toolchain
 
 ```bash [Release]
 cmake --build build --config Release
+cmake --install build
 ```
 
 ```bash [Debug]
 cmake --build build --config Debug
+cmake --install build
 ```
 :::
 
 **输出**
 
-编译输出位于项目根目录下的 `output` 路径，包含内容如下
-```bash
-output
-├── include   #头文件
-├── library   #库文件
-├── models    #模型文件
-└── res       #资源文件
-```
-对于iOS只需要使用 `library` 下的 `.framework` 库即可，里面已经包含头文件和资源文件
+编译输出位于项目根目录下的 `output` 路径
+对于iOS只需要使用 `output/libs` 下的 `.framework` 库即可，里面已经包含头文件和资源文件
 
 ## Mac
 工程根目录下执行如下命令
@@ -58,30 +53,26 @@ cmake -G Xcode -B build -S src -DCMAKE_TOOLCHAIN_FILE=../toolchain/ios.toolchain
 cmake -G Xcode -B build -S src -DCMAKE_TOOLCHAIN_FILE=../toolchain/ios.toolchain.cmake -DPLATFORM=MAC -DCMAKE_BUILD_TYPE=Debug
 ```
 :::
- 
+
 **编译**
 ::: code-group
 
 ```bash [Release]
 cmake --build build --config Release
+cmake --install build
 ```
 
 ```bash [Debug]
 cmake --build build --config Debug
+cmake --install build
 ```
 :::
 
 **输出**
 
-编译输出位于项目根目录下的 `output` 路径，包含内容如下
-```bash
-output
-├── include   #头文件
-├── library   #库文件
-├── models    #模型文件
-└── res       #资源文件
-```
-对于MacOS只需要使用 `library` 下的 `.framework` 库即可，里面已经包含头文件和资源文件
+编译输出位于项目根目录下的 `output` 路径
+ 
+对于MacOS只需要使用 `output/libs` 下的 `.framework` 库即可，里面已经包含头文件和资源文件
 
 ## Android
 
@@ -110,7 +101,7 @@ Windows编译需要安装以下环境：
 如不使用Windows Terminal，可按如下方式配置：
 
 - **64位编译**：在设置中找到`vcvars64.bat`（适用于 VS 2017 的 x64 本机工具命令提示）并单击，打开VS编译x64架构程序的虚拟环境
- 
+
 ::: warning
 仅支持生成 x86_64 Release 版本，暂不支持 x86_32
 :::
@@ -125,18 +116,12 @@ cmake -G "NMake Makefiles" -B build -S src -DCMAKE_BUILD_TYPE=Release
 
 ```bash
 cmake --build build --config Release
+cmake --install build
 ```
 
 **输出**
 
-编译输出位于项目根目录下的 `output` 路径，包含内容如下
-```bash
-output
-├── include   #头文件
-├── library   #库文件
-├── models    #模型文件
-└── res       #资源文件
-```
+编译输出位于项目根目录下的 `output` 路径
 
 ## Linux (Debian or Ubuntu)
 
@@ -167,21 +152,16 @@ cmake -B build -S src -DCMAKE_BUILD_TYPE=Debug
 
 ```bash [Release]
 cmake --build build --config Release
+cmake --install build
 ```
 
 ```bash [Debug]
 cmake --build build --config Debug
+cmake --install build
 ```
 :::
- 
+
 
 **输出**
 
-编译输出位于项目根目录下的 `output` 路径，包含内容如下
-```bash
-output
-├── include   #头文件
-├── library   #库文件
-├── models    #模型文件
-└── res       #资源文件
-```
+编译输出位于项目根目录下的 `output` 路径

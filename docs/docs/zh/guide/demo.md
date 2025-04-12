@@ -6,15 +6,7 @@ description: 本章将介绍各个系统平台Demo编译和运行方法
 
 # 示例程序
 
-本章将介绍各个系统平台Demo编译和运行方法, Demo代码位于 `demo`目录，结构如下：
-```bash
-demo
-├── CMakeLists.txt
-├── app.cmake   
-├── desktop     # 桌面 demo, 包括 Windows 和 Linux
-├── ios         # iOS demo
-└── mac         # MacOS demo
-```
+本章将介绍各个系统平台Demo编译和运行方法, Demo代码位于 `demo`目录：
 
 ::: tip
 源码使用CMake编译。最新编译好的各个平台库可以从[这里](https://github.com/pixpark/gpupixel/releases/latest)找到
@@ -100,8 +92,9 @@ cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 ```bash
 # Build
 cmake --build build --config Release
+cmake --install build
 ```
- 
+
 **按键**
 
 Demo运行起来后，按键盘调节美颜程度，具体如下：
