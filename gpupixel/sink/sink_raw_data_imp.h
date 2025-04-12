@@ -15,7 +15,7 @@
 #include <string>
 
 #include "gpupixel/core/gpupixel_program.h"
-#include "gpupixel/sink/sink.h"
+#include "gpupixel/sink/sink_raw_data.h"
 
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
 #import <AVFoundation/AVFoundation.h>
@@ -24,17 +24,16 @@
 
 namespace gpupixel {
 
-class GPUPIXEL_API SinkRawData : public Sink {
+class GPUPIXEL_API SinkRawDataImpl : public SinkRawData {
  public:
-  SinkRawData();
-  virtual ~SinkRawData();
-  static std::shared_ptr<SinkRawData> Create();
+  SinkRawDataImpl();
+  virtual ~SinkRawDataImpl();
   void Render() override;
 
-  const uint8_t* GetRgbaBuffer();
-  const uint8_t* GetI420Buffer();
-  int GetWidth() const { return width_; }
-  int GetHeight() const { return height_; }
+  const uint8_t* GetRgbaBuffer() override;
+  const uint8_t* GetI420Buffer() override;
+  int GetWidth() const override { return width_; }
+  int GetHeight() const override { return height_; }
 
  private:
   int RenderToOutput();
@@ -63,4 +62,4 @@ class GPUPIXEL_API SinkRawData : public Sink {
   uint8_t* yuv_buffer_ = nullptr;   // YUV buffer
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

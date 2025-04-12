@@ -8,8 +8,6 @@
 #pragma once
 
 #include "gpupixel/core/gpupixel_define.h"
-#include "gpupixel/core/gpupixel_framebuffer.h"
-
 #include <map>
 
 namespace gpupixel {
@@ -23,6 +21,9 @@ GPUPIXEL_API enum RotationMode {
   RotateRightFlipHorizontal,
   Rotate180
 };
+
+// 前向声明
+class GPUPixelFramebuffer;
 
 class GPUPIXEL_API Sink {
  public:

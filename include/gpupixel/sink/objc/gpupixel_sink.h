@@ -11,9 +11,11 @@
 #import <AppKit/AppKit.h>
 #endif
 
-#if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
+namespace gpupixel {
+class GPUPixelFramebuffer;
+}
 
-#include "gpupixel/core/gpupixel_framebuffer.h"
+#if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
 #include "gpupixel/sink/sink.h"
 
 @protocol GPUPixelSink <NSObject>

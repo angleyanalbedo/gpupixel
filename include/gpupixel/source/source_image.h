@@ -14,7 +14,7 @@
 namespace gpupixel {
 class GPUPIXEL_API SourceImage : public Source {
  public:
-  ~SourceImage() {};
+  virtual ~SourceImage() = default;
 
   static std::shared_ptr<SourceImage> Create(const std::string name);
 
@@ -24,23 +24,11 @@ class GPUPIXEL_API SourceImage : public Source {
       int channel_count,
       const unsigned char* pixels);
 
-  const unsigned char* GetRgbaImageBuffer() const;
-  int GetWidth() const;
-  int GetHeight() const;
+  virtual const unsigned char* GetRgbaImageBuffer() const = 0;
+  virtual int GetWidth() const = 0;
+  virtual int GetHeight() const = 0;
 
-  void Render();
-
- private:
-  void Init(int width,
-            int height,
-            int channel_count,
-            const unsigned char* pixels);
-
-  SourceImage() {}
-#if defined(GPUPIXEL_ANDROID)
-  static std::shared_ptr<SourceImage> CreateImageForAndroid(std::string name);
-#endif
-  std::vector<unsigned char> image_bytes_;
+  virtual void Render() = 0;
 };
 
 }  // namespace gpupixel

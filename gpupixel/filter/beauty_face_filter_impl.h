@@ -7,38 +7,35 @@
 
 #pragma once
 
-#include "gpupixel/filter/filter_group.h"
-#include "gpupixel/core/gpupixel_define.h"
-
+#include "gpupixel/filter/beauty_face_filter.h"
 #include "gpupixel/filter/beauty_face_unit_filter.h"
 #include "gpupixel/filter/box_blur_filter.h"
 #include "gpupixel/filter/box_high_pass_filter.h"
 #include "gpupixel/filter/gaussian_blur_filter.h"
 
 namespace gpupixel {
-class GPUPIXEL_API BeautyFaceFilter : public FilterGroup {
+class GPUPIXEL_API BeautyFaceFilterImpl : public BeautyFaceFilter {
  public:
-  static std::shared_ptr<BeautyFaceFilter> Create();
-  ~BeautyFaceFilter();
+  BeautyFaceFilterImpl();
+  ~BeautyFaceFilterImpl();
+  
   bool Init();
 
-  void SetHighPassDelta(float highPassDelta);
-  void SetSharpen(float sharpen);
-  void SetBlurAlpha(float blurAlpha);
-  void SetWhite(float white);
-  void SetRadius(float sigma);
+  void SetHighPassDelta(float highPassDelta) override;
+  void SetSharpen(float sharpen) override;
+  void SetBlurAlpha(float blurAlpha) override;
+  void SetWhite(float white) override;
+  void SetRadius(float sigma) override;
 
   virtual void SetInputFramebuffer(
       std::shared_ptr<GPUPixelFramebuffer> framebuffer,
-      RotationMode rotation_mode /* = NoRotation*/,
-      int texIdx /* = 0*/) override;
+      RotationMode rotation_mode = NoRotation,
+      int texIdx = 0) override;
 
- protected:
-  BeautyFaceFilter();
-
+ private:
   std::shared_ptr<BoxBlurFilter> box_blur_filter_;
   std::shared_ptr<BoxHighPassFilter> box_high_pass_filter_;
   std::shared_ptr<BeautyFaceUnitFilter> beauty_face_filter_;
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

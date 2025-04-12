@@ -5,16 +5,16 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel/filter/beauty_face_filter.h"
+#include "gpupixel/filter/beauty_face_filter_impl.h"
 #include "gpupixel/core/gpupixel_context.h"
 namespace gpupixel {
 
-BeautyFaceFilter::BeautyFaceFilter() {}
+BeautyFaceFilterImpl::BeautyFaceFilterImpl() {}
 
-BeautyFaceFilter::~BeautyFaceFilter() {}
+BeautyFaceFilterImpl::~BeautyFaceFilterImpl() {}
 
 std::shared_ptr<BeautyFaceFilter> BeautyFaceFilter::Create() {
-  auto ret = std::shared_ptr<BeautyFaceFilter>(new BeautyFaceFilter());
+  auto ret = std::shared_ptr<BeautyFaceFilterImpl>(new BeautyFaceFilterImpl());
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext([&] {
     if (ret && !ret->Init()) {
       ret.reset();
@@ -23,7 +23,7 @@ std::shared_ptr<BeautyFaceFilter> BeautyFaceFilter::Create() {
   return ret;
 }
 
-bool BeautyFaceFilter::Init() {
+bool BeautyFaceFilterImpl::Init() {
   if (!FilterGroup::Init()) {
     return false;
   }
@@ -55,7 +55,7 @@ bool BeautyFaceFilter::Init() {
   return true;
 }
 
-void BeautyFaceFilter::SetInputFramebuffer(
+void BeautyFaceFilterImpl::SetInputFramebuffer(
     std::shared_ptr<GPUPixelFramebuffer> framebuffer,
     RotationMode rotation_mode /* = NoRotation*/,
     int texIdx /* = 0*/) {
@@ -64,24 +64,24 @@ void BeautyFaceFilter::SetInputFramebuffer(
   }
 }
 
-void BeautyFaceFilter::SetHighPassDelta(float highPassDelta) {
+void BeautyFaceFilterImpl::SetHighPassDelta(float highPassDelta) {
   box_high_pass_filter_->SetDelta(highPassDelta);
 }
 
-void BeautyFaceFilter::SetSharpen(float sharpen) {
+void BeautyFaceFilterImpl::SetSharpen(float sharpen) {
   beauty_face_filter_->SetSharpen(sharpen);
 }
 
-void BeautyFaceFilter::SetBlurAlpha(float blurAlpha) {
+void BeautyFaceFilterImpl::SetBlurAlpha(float blurAlpha) {
   beauty_face_filter_->SetBlurAlpha(blurAlpha);
 }
 
-void BeautyFaceFilter::SetWhite(float white) {
+void BeautyFaceFilterImpl::SetWhite(float white) {
   beauty_face_filter_->SetWhite(white);
 }
 
-void BeautyFaceFilter::SetRadius(float radius) {
+void BeautyFaceFilterImpl::SetRadius(float radius) {
   box_blur_filter_->SetRadius(radius);
   box_high_pass_filter_->SetRadius(radius);
 }
-}  // namespace gpupixel
+}  // namespace gpupixel 

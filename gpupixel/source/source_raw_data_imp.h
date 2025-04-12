@@ -8,26 +8,27 @@
 #pragma once
 
 #include <functional>
-#include "gpupixel/filter/filter.h"
+#include "gpupixel/source/source_raw_data.h"
 #include "gpupixel/core/gpupixel_program.h"
-namespace gpupixel {
-class GPUPIXEL_API SourceRawData : public Filter {
- public:
-  ~SourceRawData();
-  static std::shared_ptr<SourceRawData> Create();
+#include "gpupixel/filter/filter.h"
 
+namespace gpupixel {
+class GPUPIXEL_API SourceRawDataImpl : public SourceRawData, public Filter {
+ public:
+  SourceRawDataImpl();
+  ~SourceRawDataImpl() override;
+  
   void ProcessData(const uint8_t* data,
                    int width,
                    int height,
                    int stride,
-                   GPUPIXEL_FRAME_TYPE type);
+                   GPUPIXEL_FRAME_TYPE type) override;
 
-  void SetRotation(RotationMode rotation);
-
- private:
-  SourceRawData();
+  void SetRotation(RotationMode rotation) override;
+  
   bool Init();
 
+ private:
   int GenerateTextureWithI420(int width,
                               int height,
                               const uint8_t* dataY,
@@ -53,4 +54,4 @@ class GPUPIXEL_API SourceRawData : public Filter {
   std::shared_ptr<GPUPixelFramebuffer> framebuffer_;
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

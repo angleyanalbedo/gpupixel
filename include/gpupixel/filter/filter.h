@@ -8,11 +8,12 @@
 #pragma once
 
 #include "gpupixel/core/gpupixel_define.h"
-#include "gpupixel/core/gpupixel_program.h"
 #include "gpupixel/sink/sink.h"
 #include "gpupixel/source/source.h"
-
+#include "gpupixel/utils/math_toolbox.h"
+#include <string>
 namespace gpupixel {
+class GPUPixelGLProgram;
 const std::string kDefaultVertexShader = R"(
     attribute vec4 position; attribute vec4 inputTextureCoordinate;
 

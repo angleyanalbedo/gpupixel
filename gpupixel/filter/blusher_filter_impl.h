@@ -7,12 +7,13 @@
 
 #pragma once
 
-#include "gpupixel/filter/face_makeup_filter.h"
+#include "gpupixel/filter/blusher_filter.h"
 
 namespace gpupixel {
-class GPUPIXEL_API LipstickFilter : public FaceMakeupFilter {
+class GPUPIXEL_API BlusherFilterImpl : public BlusherFilter {
  public:
-  static std::shared_ptr<LipstickFilter> Create();
+  BlusherFilterImpl();
+  
   bool Init() override;
 };
 

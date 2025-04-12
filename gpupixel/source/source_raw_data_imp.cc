@@ -5,7 +5,7 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel/source/source_raw_data.h"
+#include "gpupixel/source/source_raw_data_imp.h"
 #include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/utils/util.h"
 
@@ -71,7 +71,7 @@ const std::string kI420FragmentShaderString = R"(
 #endif
 
 std::shared_ptr<SourceRawData> SourceRawData::Create() {
-  auto ret = std::shared_ptr<SourceRawData>(new SourceRawData());
+  auto ret = std::shared_ptr<SourceRawDataImpl>(new SourceRawDataImpl());
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext([&] {
     if (!ret->Init()) {
       return ret.reset();
@@ -80,14 +80,14 @@ std::shared_ptr<SourceRawData> SourceRawData::Create() {
   return ret;
 }
 
-SourceRawData::SourceRawData() {}
+SourceRawDataImpl::SourceRawDataImpl() {}
 
-SourceRawData::~SourceRawData() {
+SourceRawDataImpl::~SourceRawDataImpl() {
   GPUPixelContext::GetInstance()->SyncRunWithContext(
       [=] { glDeleteTextures(4, textures_); });
 }
 
-bool SourceRawData::Init() {
+bool SourceRawDataImpl::Init() {
   filter_program_ = GPUPixelGLProgram::CreateWithShaderString(
       kI420VertexShaderString, kI420FragmentShaderString);
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
@@ -118,11 +118,11 @@ bool SourceRawData::Init() {
   return true;
 }
 
-void SourceRawData::SetRotation(RotationMode rotation) {
+void SourceRawDataImpl::SetRotation(RotationMode rotation) {
   rotation_ = rotation;
 }
 
-void SourceRawData::ProcessData(const uint8_t* data,
+void SourceRawDataImpl::ProcessData(const uint8_t* data,
                                 int width,
                                 int height,
                                 int stride,
@@ -150,7 +150,7 @@ void SourceRawData::ProcessData(const uint8_t* data,
   });
 }
 
-int SourceRawData::GenerateTextureWithI420(int width,
+int SourceRawDataImpl::GenerateTextureWithI420(int width,
                                            int height,
                                            const uint8_t* dataY,
                                            int strideY,
@@ -165,10 +165,10 @@ int SourceRawData::GenerateTextureWithI420(int width,
                        ->CreateFramebuffer(width, height);
   }
 
-  this->SetFramebuffer(framebuffer_, NoRotation);
+  this->Filter::SetFramebuffer(framebuffer_, NoRotation);
 
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
-  this->GetFramebuffer()->Activate();
+  this->Filter::GetFramebuffer()->Activate();
 
   GLfloat imageVertices[]{
       -1.0, -1.0,  // left down
@@ -199,13 +199,13 @@ int SourceRawData::GenerateTextureWithI420(int width,
   filter_program_->SetUniformValue("texture_type", 0);
   // draw frame buffer
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  this->GetFramebuffer()->Deactivate();
+  this->Filter::GetFramebuffer()->Deactivate();
 
-  Source::DoRender(true);
+  Filter::DoRender(true);
   return 0;
 }
 
-int SourceRawData::GenerateTextureWithPixels(const uint8_t* pixels,
+int SourceRawDataImpl::GenerateTextureWithPixels(const uint8_t* pixels,
                                              int width,
                                              int height,
                                              int stride,
@@ -216,7 +216,7 @@ int SourceRawData::GenerateTextureWithPixels(const uint8_t* pixels,
                        ->GetFramebufferFactory()
                        ->CreateFramebuffer(stride / 4, height);
   }
-  this->SetFramebuffer(framebuffer_, NoRotation);
+  this->Filter::SetFramebuffer(framebuffer_, NoRotation);
 
   GLuint texture = textures_[3];
   CHECK_GL(glBindTexture(GL_TEXTURE_2D, texture));
@@ -232,7 +232,7 @@ int SourceRawData::GenerateTextureWithPixels(const uint8_t* pixels,
   }
 
   GPUPixelContext::GetInstance()->SetActiveGlProgram(filter_program_);
-  this->GetFramebuffer()->Activate();
+  this->Filter::GetFramebuffer()->Activate();
 
   GLfloat imageVertices[]{
       -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
@@ -248,16 +248,15 @@ int SourceRawData::GenerateTextureWithPixels(const uint8_t* pixels,
   CHECK_GL(glVertexAttribPointer(filter_tex_coord_attribute_, 2, GL_FLOAT, 0, 0,
                                  GetTextureCoordinate(rotation_)));
 
-  CHECK_GL(glActiveTexture(GL_TEXTURE4));
-  CHECK_GL(glBindTexture(GL_TEXTURE_2D, texture));
-  filter_program_->SetUniformValue("inputImageTexture", 4);
+  filter_program_->SetUniformValue("inputImageTexture", 3);
+  glActiveTexture(GL_TEXTURE3);
+  glBindTexture(GL_TEXTURE_2D, texture);
 
-  // draw frame buffer
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  this->GetFramebuffer()->Deactivate();
+  this->Filter::GetFramebuffer()->Deactivate();
 
-  Source::DoRender(true);
+  Filter::DoRender(true);
   return 0;
 }
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

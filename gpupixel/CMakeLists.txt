@@ -29,6 +29,7 @@ add_definitions(-DMYMATH_EXPORT_LIBRARY)
 # 项目核心头文件包含目录
 include_directories(
     ${GPUPIXEL_ROOT_DIR}
+    ${GPUPIXEL_ROOT_DIR}/include
     ${GPUPIXEL_ROOT_DIR}/third_party/libyuv/include
 )
 
@@ -90,31 +91,18 @@ endif()
 if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
     # macOS/iOS平台使用framework结构和标准include目录
     set(FRAMEWORK_HEADER_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.framework/Headers")
-    # 同时安装到framework和标准目录
-    install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
-            DESTINATION ${FRAMEWORK_HEADER_DIR}/)
- 
-    # 同时安装到framework和标准目录
-    foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
-        install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
-                DESTINATION ${FRAMEWORK_HEADER_DIR}/${DIR}
-                FILES_MATCHING PATTERN "*.h")
-    endforeach()
+
+    install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/include/gpupixel/
+    DESTINATION ${FRAMEWORK_HEADER_DIR}
+    FILES_MATCHING PATTERN "*.h")
  
 endif()
 
 # 其他平台只使用标准include目录
 ################################################################################
-set(STANDARD_HEADER_DIR "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}")
-
-install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
-        DESTINATION ${STANDARD_HEADER_DIR}/gpupixel)
-
-foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
-    install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
-            DESTINATION ${STANDARD_HEADER_DIR}/gpupixel/${DIR}
-            FILES_MATCHING PATTERN "*.h")
-endforeach()
+install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/include/
+DESTINATION ${CMAKE_INCLUDE_OUTPUT_DIRECTORY}
+FILES_MATCHING PATTERN "*.h")
 
 # 资源文件安装
 install(DIRECTORY 

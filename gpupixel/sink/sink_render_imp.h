@@ -8,34 +8,25 @@
 #pragma once
 
 #include "gpupixel/core/gpupixel_program.h"
-#include "gpupixel/sink/sink.h"
+#include "gpupixel/sink/sink_render.h"
 
 namespace gpupixel {
-class GPUPIXEL_API SinkRender : public Sink {
+class GPUPIXEL_API SinkRenderImpl : public SinkRender {
  public:
-  enum FillMode {
-    Stretch = 0,  // Stretch to fill the view, and may distort the image
-    PreserveAspectRatio = 1,  // preserve the aspect ratio of the image
-    PreserveAspectRatioAndFill =
-        2  // preserve the aspect ratio, and zoom in to fill the view
-  };
+  SinkRenderImpl();
+  ~SinkRenderImpl() override;
 
- public:
-  static std::shared_ptr<SinkRender> Create();
-  ~SinkRender();
-
-  void Init();
-  virtual void SetInputFramebuffer(
+  void Init() override;
+  void SetInputFramebuffer(
       std::shared_ptr<GPUPixelFramebuffer> framebuffer,
       RotationMode rotation_mode = NoRotation,
       int tex_idx = 0) override;
-  void SetFillMode(FillMode fill_mode);
-  void SetMirror(bool mirror);
-  void SetRenderSize(int width, int height);
-  virtual void Render() override;
+  void SetFillMode(FillMode fill_mode) override;
+  void SetMirror(bool mirror) override;
+  void SetRenderSize(int width, int height) override;
+  void Render() override;
 
  private:
-  SinkRender();
   int view_width_;
   int view_height_;
   FillMode fill_mode_;
@@ -57,4 +48,4 @@ class GPUPIXEL_API SinkRender : public Sink {
   const GLfloat* GetTextureCoordinate(RotationMode rotation_mode);
 };
 
-}  // namespace gpupixel
+}  // namespace gpupixel 

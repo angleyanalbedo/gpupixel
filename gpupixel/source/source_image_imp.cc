@@ -5,7 +5,7 @@
  * Copyright © 2021 PixPark. All rights reserved.
  */
 
-#include "gpupixel/source/source_image.h"
+#include "gpupixel/source/source_image_imp.h"
 #include "gpupixel/core/gpupixel_context.h"
 #include "gpupixel/utils/util.h"
 
@@ -24,7 +24,7 @@ std::shared_ptr<SourceImage> SourceImage::CreateFromBuffer(
     int height,
     int channel_count,
     const unsigned char* pixels) {
-  auto sourceImage = std::shared_ptr<SourceImage>(new SourceImage());
+  auto sourceImage = std::shared_ptr<SourceImageImpl>(new SourceImageImpl());
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext(
       [&] { sourceImage->Init(width, height, channel_count, pixels); });
   return sourceImage;
@@ -46,7 +46,7 @@ std::shared_ptr<SourceImage> SourceImage::Create(const std::string name) {
   return image;
 }
 
-void SourceImage::Init(int width,
+void SourceImageImpl::Init(int width,
                        int height,
                        int channel_count,
                        const unsigned char* pixels) {
@@ -67,27 +67,27 @@ void SourceImage::Init(int width,
   CHECK_GL(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
-void SourceImage::Render() {
+void SourceImageImpl::Render() {
   gpupixel::GPUPixelContext::GetInstance()->SyncRunWithContext(
       [&] { Source::DoRender(); });
 }
 
-const unsigned char* SourceImage::GetRgbaImageBuffer() const {
+const unsigned char* SourceImageImpl::GetRgbaImageBuffer() const {
   return image_bytes_.data();
 }
 
-int SourceImage::GetWidth() const {
+int SourceImageImpl::GetWidth() const {
   if (framebuffer_) {
     return framebuffer_->GetWidth();
   }
   return 0;
 }
 
-int SourceImage::GetHeight() const {
+int SourceImageImpl::GetHeight() const {
   if (framebuffer_) {
     return framebuffer_->GetHeight();
   }
   return 0;
 }
 
-}  // namespace gpupixel
+}  // namespace gpupixel 
