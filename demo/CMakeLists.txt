@@ -99,7 +99,7 @@ elseif(${CURRENT_OS} STREQUAL "windows")
                       ${CMAKE_INSTALL_LIBDIR}/mars-face-kit.dll)
 
     target_link_libraries(${PROJECT_NAME}
-                        ${CMAKE_INSTALL_LIBDIR}/gpupixel.lib
+                        gpupixel
                         opengl32
                         ${GPUPIXEL_ROOT_DIR}/third_party/glfw/libs/msvc-x64/glfw3.lib)
 
