@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "gpupixel/face_detector/face_detector.h"
-#include "gpupixel/android/jni/jni_helpers.h"
+#include "android/jni/jni_helpers.h"
 
 using namespace gpupixel;
 

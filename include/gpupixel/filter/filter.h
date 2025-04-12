@@ -122,7 +122,7 @@ class GPUPIXEL_API Filter : public Source, public Sink {
 
  protected:
   GPUPixelGLProgram* filter_program_;
-  GLuint filter_position_attribute_;
+  uint32_t filter_position_attribute_;
   std::string filter_class_name_;
   struct {
     float r;
@@ -135,7 +135,7 @@ class GPUPIXEL_API Filter : public Source, public Sink {
 
   std::string GetVertexShaderString(int input_number) const;
 
-  const GLfloat* GetTextureCoordinate(const RotationMode& rotation_mode) const;
+  const float* GetTextureCoordinate(const RotationMode& rotation_mode) const;
 
   // properties
   struct Property {

@@ -9,7 +9,7 @@
 
 #include "gpupixel/filter/filter.h"
 #include "gpupixel/core/gpupixel_define.h"
-
+#include "core/gpupixel_gl_include.h"
 namespace gpupixel {
 class GPUPIXEL_API BoxDifferenceFilter : public Filter {
  public:

@@ -196,7 +196,7 @@ bool Filter::DoRender(bool update_sinks) {
   return Source::DoRender(update_sinks);
 }
 
-const GLfloat* Filter::GetTextureCoordinate(
+const float* Filter::GetTextureCoordinate(
     const RotationMode& rotation_mode) const {
   static const GLfloat no_rotation_texture_coordinates[] = {
       0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,

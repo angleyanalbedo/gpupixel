@@ -3,7 +3,7 @@
 #include <string>
 
 #include "core/gpupixel_context.h"
-#include "gpupixel/android/jni/jni_helpers.h"
+#include "android/jni/jni_helpers.h"
 #include "gpupixel/sink/sink_raw_data.h"
 
 using namespace gpupixel;

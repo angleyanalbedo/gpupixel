@@ -11,7 +11,7 @@
 
 #if defined(GPUPIXEL_ANDROID)
 #include <android/bitmap.h>
-#include "gpupixel/android/jni/jni_helpers.h"
+#include "android/jni/jni_helpers.h"
 #endif
 
 #define STB_IMAGE_IMPLEMENTATION

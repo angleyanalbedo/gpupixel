@@ -10,7 +10,7 @@
 #include "core/gpupixel_context.h"
 #if defined(GPUPIXEL_ANDROID)
 #include <android/log.h>
-#include "gpupixel/android/jni/jni_helpers.h"
+#include "android/jni/jni_helpers.h"
 #elif defined(GPUPIXEL_IOS)
 #import <Foundation/foundation.h>
 #import <UIKit/UIKit.h>
