@@ -14,7 +14,6 @@
 #include <mutex>
 #include <string>
 
-#include "gpupixel/core/gpupixel_program.h"
 #include "gpupixel/sink/sink.h"
 
 #if defined(GPUPIXEL_IOS) || defined(GPUPIXEL_MAC)
@@ -23,7 +22,7 @@
 #endif
 
 namespace gpupixel {
-
+class GPUPixelGLProgram;
 class GPUPIXEL_API SinkRawData : public Sink {
  public:
   static std::shared_ptr<SinkRawData> Create();

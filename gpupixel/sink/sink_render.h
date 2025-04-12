@@ -7,11 +7,10 @@
 
 #pragma once
 
-#include "gpupixel/core/gpupixel_program.h"
 #include "gpupixel/sink/sink.h"
 
 namespace gpupixel {
-
+class GPUPixelGLProgram;
 class GPUPIXEL_API SinkRender : public Sink {
  public:
   enum FillMode {

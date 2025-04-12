@@ -8,11 +8,12 @@
 #pragma once
 
 #include <functional>
-#include "gpupixel/core/gpupixel_program.h"
+
 #include "gpupixel/filter/filter.h"
 #include "gpupixel/source/source.h"
 
 namespace gpupixel {
+class GPUPixelGLProgram;
 class GPUPIXEL_API SourceRawData : public Filter {
  public:
   static std::shared_ptr<SourceRawData> Create();

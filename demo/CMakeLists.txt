@@ -33,7 +33,7 @@ endif()
 
 # Common third-party includes for all platforms
 include_directories(
-    ${GPUPIXEL_ROOT_DIR}/include
+    ${GPUPIXEL_ROOT_DIR}/
     ${GPUPIXEL_ROOT_DIR}/third_party/stb
     ${GPUPIXEL_ROOT_DIR}/third_party/glad/include
     ${GPUPIXEL_ROOT_DIR}/third_party/imgui
