@@ -89,19 +89,31 @@ endif()
 
 if(${CURRENT_OS} STREQUAL "macos" OR ${CURRENT_OS} STREQUAL "ios")
     set(FRAMEWORK_HEADER_DIR "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}.framework/Headers")
-
-    install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/include/gpupixel/
-    DESTINATION ${FRAMEWORK_HEADER_DIR}
-    FILES_MATCHING PATTERN "*.h")
  
+    # 同时安装到framework和标准目录
+    install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
+            DESTINATION ${FRAMEWORK_HEADER_DIR}/)
+            
+    # 同时安装到framework和标准目录
+    foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
+        install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
+                DESTINATION ${FRAMEWORK_HEADER_DIR}/${DIR}
+                FILES_MATCHING PATTERN "*.h")
+    endforeach()
 endif()
 
 # 其他平台只使用标准include目录
 ################################################################################
-install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h")
+install(FILES ${GPUPIXEL_ROOT_DIR}/gpupixel/gpupixel.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gpupixel)
 
+foreach(DIR ${GPUPIXEL_SOURCE_DIRS})
+    install(DIRECTORY ${GPUPIXEL_ROOT_DIR}/gpupixel/${DIR}/
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/gpupixel/${DIR}
+            FILES_MATCHING PATTERN "*.h")
+endforeach()
+
+    
 # 资源文件安装
 install(DIRECTORY 
     ${GPUPIXEL_ROOT_DIR}/gpupixel/res/
