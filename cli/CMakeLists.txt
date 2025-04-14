@@ -9,21 +9,21 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Define and initialize application project
 set(APP_PROJECT_NAME "beautycli")
-include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
+# include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 project(${APP_PROJECT_NAME})
 
 # Set the project version
 
 
-find_package(OpenCV REQUIRED)
-if(OpenCV_FOUND)
-    message(STATUS "OpenCV version: ${OpenCV_VERSION}")
-    message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
-    message(STATUS "OpenCV library dir: ${OpenCV_LIB_DIR}")
-else()
-    message(FATAL_ERROR "OpenCV not found!")
+# find_package(OpenCV REQUIRED)
+# if(OpenCV_FOUND)
+#     message(STATUS "OpenCV version: ${OpenCV_VERSION}")
+#     message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
+#     message(STATUS "OpenCV library dir: ${OpenCV_LIB_DIR}")
+# else()
+#     message(FATAL_ERROR "OpenCV not found!")
     
-endif()
+# endif()
 
 # find_package(glfw3 REQUIRED)
 # find_package(glad REQUIRED)
@@ -31,9 +31,9 @@ endif()
 # link_directories(${GLAD_LIBRARY_DIRS})
 # include_directories(${GLFW3_INCLUDE_DIRS})
 # link_directories(${GLFW3_LIBRARY_DIRS})
-include_directories(${OpenCV_INCLUDE_DIRS})
-link_directories(${OpenCV_LIB_DIR})
-link_libraries(${OpenCV_LIBS})
+# include_directories(${OpenCV_INCLUDE_DIRS})
+# link_directories(${OpenCV_LIB_DIR})
+# link_libraries(${OpenCV_LIBS})
 
 # Platform Detection
 # Detect and set the current operating system
@@ -93,7 +93,7 @@ endif()
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/stb
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/glad/include
-    # ${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui
 )
 
 # Source Files Configuration
@@ -104,12 +104,12 @@ file(GLOB SOURCE_FILES
 )
 
 # Add ImGui source files
-# file(GLOB IMGUI_SOURCE_FILES
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui/*.cpp"
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui/backends/imgui_impl_glfw.cpp"
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui/backends/imgui_impl_opengl3.cpp"
-# )
-# list(APPEND SOURCE_FILES ${IMGUI_SOURCE_FILES})
+file(GLOB IMGUI_SOURCE_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui/backends/imgui_impl_glfw.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/imgui/backends/imgui_impl_opengl3.cpp"
+)
+list(APPEND SOURCE_FILES ${IMGUI_SOURCE_FILES})
 
 # Platform Specific Configuration
 # Add platform-specific source files and settings
@@ -157,7 +157,7 @@ elseif(${CURRENT_OS} STREQUAL "windows")
                         opengl32
                         ${CMAKE_CURRENT_SOURCE_DIR}/../src/third_party/glfw/libs/msvc-x64/glfw3.lib)
 
-    # set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
 endif()
  
 # Post-Build Commands
