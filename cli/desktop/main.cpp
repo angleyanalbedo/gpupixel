@@ -26,7 +26,7 @@ int main(){
         return -1;
     }
     cv::imshow("Original Image", image);
-    cv::waitKey(0);
+    cv::waitKey(10);
     std::cout << "Image loaded successfully" << std::endl;
     std::cout << "Image size: " << image.rows << "x" << image.cols << std::endl;
     gpuPixel.setParameters(5.0, 5.0, 5.0, 5.0, 5.0, 5.0);

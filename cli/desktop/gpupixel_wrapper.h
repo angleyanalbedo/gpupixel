@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #define DEBUG 1
+#define USE_GLFW 0
 
 class GpuPixelWrapper
 {
@@ -31,7 +32,15 @@ public:
         
     };
     ~GpuPixelWrapper(){}
-    bool initialize(){
+
+    #if USE_GLFW
+    bool 
+    #else
+    void
+    #endif
+    
+    initialize(){
+    #if USE_GLFW
         // initialize OpenGL functions
         window = gpupixel::GPUPixelContext::GetInstance()->GetGLContext();
         if (window == nullptr) {
@@ -43,6 +52,7 @@ public:
             std::cerr << "Failed to initialize GLAD" << std::endl;
             return false;
         }
+    #endif
         #ifdef DEBUG
         std::cout << "Initializing GPU Pixel..." << std::endl;
         #endif
