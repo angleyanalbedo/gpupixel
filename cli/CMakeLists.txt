@@ -9,21 +9,24 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Define and initialize application project
 set(APP_PROJECT_NAME "beautycli")
-# include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
+include($ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 project(${APP_PROJECT_NAME})
 
 # Set the project version
 
 
-# find_package(OpenCV REQUIRED)
-# if(OpenCV_FOUND)
-#     message(STATUS "OpenCV version: ${OpenCV_VERSION}")
-#     message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
-#     message(STATUS "OpenCV library dir: ${OpenCV_LIB_DIR}")
-# else()
-#     message(FATAL_ERROR "OpenCV not found!")
+find_package(OpenCV REQUIRED)
+if(OpenCV_FOUND)
+    message(STATUS "OpenCV version: ${OpenCV_VERSION}")
+    message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
+    message(STATUS "OpenCV library dir: ${OpenCV_LIB_DIR}")
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    link_directories(${OpenCV_LIB_DIR})
+    link_libraries(${OpenCV_LIBS})
+else()
+    message(FATAL_ERROR "OpenCV not found!")
     
-# endif()
+endif()
 
 # find_package(glfw3 REQUIRED)
 # find_package(glad REQUIRED)
@@ -31,9 +34,7 @@ project(${APP_PROJECT_NAME})
 # link_directories(${GLAD_LIBRARY_DIRS})
 # include_directories(${GLFW3_INCLUDE_DIRS})
 # link_directories(${GLFW3_LIBRARY_DIRS})
-# include_directories(${OpenCV_INCLUDE_DIRS})
-# link_directories(${OpenCV_LIB_DIR})
-# link_libraries(${OpenCV_LIBS})
+
 
 # Platform Detection
 # Detect and set the current operating system

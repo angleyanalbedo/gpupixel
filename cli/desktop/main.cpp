@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <opencv2/opencv.hpp>
+
 #include <iostream>
 #include "face_detector.h"
 #include "gpupixel.h"
@@ -15,9 +17,10 @@ std::shared_ptr<BeautyFaceFilter> beauty_filter_;
 std::shared_ptr<FaceReshapeFilter> reshape_filter_;
 std::shared_ptr<gpupixel::LipstickFilter> lipstick_filter_;
 std::shared_ptr<gpupixel::BlusherFilter> blusher_filter_;
-std::shared_ptr<SourceImage> source_image_;
+std::shared_ptr<SourceRawData> source_raw_data_;
 std::shared_ptr<SinkRawData> sink_raw_data_;
 std::shared_ptr<FaceDetector> face_detector_;
+cv::Mat frame;
 
 // Filter parameters
 float beauty_strength_ = 0.0f;
@@ -29,6 +32,9 @@ float blusher_strength_ = 0.0f;
 
 // GLFW window handle
 GLFWwindow* main_window_ = nullptr;
+
+//opencv capture handle
+cv::VideoCapture capture_;
 
 // Check shader compilation/linking errors
 bool CheckShaderErrors(GLuint shader, const char* type) {
@@ -119,6 +125,18 @@ void SetupImGui() {
   ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
+//initialize opencv capture
+void SetupCapture(std::string video_path) {
+  capture_.open(video_path);
+  if (!capture_.isOpened()) {
+    std::cerr << "Failed to open video file: " << video_path << std::endl;
+    return;
+  }
+  // Set capture properties (optional)
+  // capture.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
+  // capture.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
+}
+
 // Initialize GPUPixel filters and pipeline
 void SetupFilterPipeline() {
   // Create filters
@@ -129,11 +147,11 @@ void SetupFilterPipeline() {
   face_detector_ = FaceDetector::Create();
 
   // Create source image and sink raw data
-  source_image_ = SourceImage::Create("demo.png");
+  source_raw_data_ = SourceRawData::Create();
   sink_raw_data_ = SinkRawData::Create();
 
   // Build filter pipeline
-  source_image_->AddSink(lipstick_filter_)
+  source_raw_data_->AddSink(lipstick_filter_)
       ->AddSink(blusher_filter_)
       ->AddSink(reshape_filter_)
       ->AddSink(beauty_filter_)
@@ -340,9 +358,24 @@ void RenderFrame() {
   // Update filter parameters from UI
   UpdateFilterParametersFromUI();
 
-  int width = source_image_->GetWidth();
-  int height = source_image_->GetHeight();
-  const unsigned char* buffer = source_image_->GetRgbaImageBuffer();
+  
+  if (!capture_.read(frame)) {
+    std::cerr << "Failed to read frame from video capture" << std::endl;
+    return;
+  }
+  if(frame.empty()) {
+    std::cerr << "Empty frame captured" << std::endl;
+    return;
+  }
+  
+  
+  // cv::imshow("Frame", frame);
+
+  cv::cvtColor(frame, frame, cv::COLOR_BGR2RGBA);
+
+  int width = frame.cols;
+  int height = frame.rows;
+  const unsigned char* buffer = frame.data;
 
   // Detect face landmarks
   std::vector<float> landmarks = face_detector_->Detect(
@@ -353,16 +386,31 @@ void RenderFrame() {
     lipstick_filter_->SetFaceLandmarks(landmarks);
     blusher_filter_->SetFaceLandmarks(landmarks);
     reshape_filter_->SetFaceLandmarks(landmarks);
+  }else {
+    std::cerr << "No face detected" << std::endl;
   }
 
+
   // Process image
-  source_image_->Render();
+  source_raw_data_->ProcessData(buffer, width, height, width * 4,
+                             GPUPIXEL_FRAME_TYPE_RGBA);
 
   // Get processed RGBA data
   const uint8_t* rgba_data = sink_raw_data_->GetRgbaBuffer();
+  if (!rgba_data) {
+    std::cerr << "Failed to get RGBA data from sink" << std::endl;
+    return;
+  }
   width = sink_raw_data_->GetWidth();
   height = sink_raw_data_->GetHeight();
-
+  // frame = cv::Mat(height, width, CV_8UC4, (void*)rgba_data).clone();
+  
+  if (!rgba_data || width <= 0 || height <= 0) {
+    std::cerr << "Invalid RGBA data" << std::endl;
+    return;
+  }
+  // cv::imshow("Processed Frame", frame); 
+  
   // Render RGBA data to screen using the encapsulated function
   RenderRGBAToScreen(rgba_data, width, height);
 
@@ -390,17 +438,28 @@ void CleanupResources() {
   glfwTerminate();
 }
 
-int main() {
+int main(int argc, char** argv) {
+  // get video path
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " <video_path>" << std::endl;
+    return -1;
+  }
+  std::string video_path = argv[1];
+  // Set up OpenCV capture
+  std::cout << "Opening video file: " << video_path << std::endl;
+  SetupCapture(video_path);
   // Initialize window and OpenGL context
   if (!SetupGlfwWindow()) {
     return -1;
   }
+  std::cout << "GLFW window created successfully" << std::endl;
 
   // Setup ImGui interface
   SetupImGui();
-
+  std::cout << "ImGui initialized successfully" << std::endl;
   // Initialize filters and pipeline
   SetupFilterPipeline();
+  std::cout << "Filter pipeline initialized successfully" << std::endl;
 
   // Main render loop
   while (!glfwWindowShouldClose(main_window_)) {
