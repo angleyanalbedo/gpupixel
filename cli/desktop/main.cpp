@@ -35,6 +35,15 @@ GLFWwindow* main_window_ = nullptr;
 
 //opencv capture handle
 cv::VideoCapture capture_;
+// video info 
+int total_frames = 0; // total frames in the video
+float fps = 0.0f; // frames per second
+int width = 0; // video width
+int height = 0; // video height
+
+// Video progress status
+float progress = 0.0f; // video progress status (0.0 到 1.0)
+bool show_progress_bar = true;
 
 // Check shader compilation/linking errors
 bool CheckShaderErrors(GLuint shader, const char* type) {
@@ -132,6 +141,17 @@ void SetupCapture(std::string video_path) {
     std::cerr << "Failed to open video file: " << video_path << std::endl;
     return;
   }
+  // Get video properties
+  total_frames = static_cast<int>(capture_.get(cv::CAP_PROP_FRAME_COUNT));
+  fps = capture_.get(cv::CAP_PROP_FPS);
+  width = static_cast<int>(capture_.get(cv::CAP_PROP_FRAME_WIDTH));
+  height = static_cast<int>(capture_.get(cv::CAP_PROP_FRAME_HEIGHT));
+  std::cout << "Video Properties: " << std::endl;
+  std::cout << "Total Frames: " << total_frames << std::endl;
+  std::cout << "FPS: " << fps << std::endl;
+  std::cout << "Width: " << width << std::endl;
+  std::cout << "Height: " << height << std::endl;
+  
   // Set capture properties (optional)
   // capture.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
   // capture.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
@@ -160,6 +180,8 @@ void SetupFilterPipeline() {
 
 // Update filter parameters from ImGui controls
 void UpdateFilterParametersFromUI() {
+
+
   ImGui::Begin("Beauty Control Panel", nullptr,
                ImGuiWindowFlags_AlwaysAutoResize);
 
@@ -358,7 +380,18 @@ void RenderFrame() {
   // Update filter parameters from UI
   UpdateFilterParametersFromUI();
 
-  
+  ImGui::Begin("Video Control");
+  // Display video progress bar
+  if (show_progress_bar)
+  {
+      ImGui::Text("Video Progress: %.1f%%", progress * 100.0f);
+      ImGui::SliderFloat("##progress", &progress, 0.0f, 1.0f, "");
+  }
+
+  ImGui::End();
+  int current_frame = static_cast<int>(progress * total_frames);
+  capture_.set(cv::CAP_PROP_POS_FRAMES, current_frame);
+
   if (!capture_.read(frame)) {
     std::cerr << "Failed to read frame from video capture" << std::endl;
     return;
