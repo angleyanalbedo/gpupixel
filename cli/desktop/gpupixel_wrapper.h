@@ -101,7 +101,13 @@ public:
         source_image = gpupixel::SourceImage::CreateFromBuffer( image.cols, image.rows,image.channels(), data);
     }
     void loadImage(const unsigned char* data, int width, int height, int channels){
+        if (data == nullptr) {
+            throw std::runtime_error("Data is null");
+        }
         source_image = gpupixel::SourceImage::CreateFromBuffer(width, height, channels, data);
+        if (!source_image) {
+            throw std::runtime_error("Failed to create source image from buffer");
+        }
     }
     void setBeautyFaceFilter(float value){
         if (!beauty_face_filter) {
