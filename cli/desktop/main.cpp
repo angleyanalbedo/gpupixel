@@ -372,6 +372,7 @@ void RenderRGBAToScreen(const uint8_t* rgba_data, int width, int height) {
 
 // Render a single frame
 void RenderFrame() {
+  static int current_frame = 0;
   // Start ImGui frame
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -389,13 +390,18 @@ void RenderFrame() {
   }
 
   ImGui::End();
-  int current_frame = static_cast<int>(progress * total_frames);
-  capture_.set(cv::CAP_PROP_POS_FRAMES, current_frame);
 
+  int new_current_frame = static_cast<int>(progress * total_frames);
+  if (abs(new_current_frame - current_frame)>4) {
+    capture_.set(cv::CAP_PROP_POS_FRAMES, current_frame);
+  }
+  
   if (!capture_.read(frame)) {
     std::cerr << "Failed to read frame from video capture" << std::endl;
     return;
   }
+  current_frame++;
+  progress = static_cast<float>(current_frame) / total_frames;
   if(frame.empty()) {
     std::cerr << "Empty frame captured" << std::endl;
     return;
