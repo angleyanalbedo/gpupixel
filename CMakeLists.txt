@@ -6,6 +6,7 @@ ADD_SUBDIRECTORY(src)
 
 # Add demo directory and set dependencies
 ADD_SUBDIRECTORY(demo)
+ADD_SUBDIRECTORY(cli)
 # Get all targets from demo directory
 get_directory_property(EXAMPLE_TARGETS DIRECTORY demo BUILDSYSTEM_TARGETS)
 # Add src dependency for each example target
