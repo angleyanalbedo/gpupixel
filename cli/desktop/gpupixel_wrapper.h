@@ -8,6 +8,15 @@
 #define DEBUG 1
 #define USE_GLFW 0
 
+struct parameters {
+    float beautyValue;
+    float whithValue;
+    float thinFaceValue;
+    float bigeyeValue;
+    float lipstickValue;
+    float blusherValue;
+};
+
 class GpuPixelWrapper
 {
 private:
@@ -68,6 +77,10 @@ public:
         #ifdef DEBUG
         std::cout << "Creating filters..." << std::endl;
         #endif
+        
+        
+    }
+    void addFilter(){
         source_image->AddSink(beauty_face_filter)
             ->AddSink(face_reshape_filter)
             ->AddSink(lipstick_filter)
@@ -76,7 +89,6 @@ public:
         #ifdef DEBUG
         std::cout << "Filters created" << std::endl;
         #endif
-        
     }
     void loadImage(const std::string& image_path){
         source_image = gpupixel::SourceImage::Create(image_path);
@@ -104,6 +116,27 @@ public:
     }
     std::shared_ptr<gpupixel::SinkRawData> getSinkRawData() const {
         return sink_raw_data;
+    }
+    void setParameters(parameters& pater){
+        if (pater.beautyValue < 0.0) pater.beautyValue = 0.0;
+        if (pater.beautyValue > 10.0) pater.beautyValue = 10.0;
+        if (pater.whithValue < 0.0) pater.whithValue = 0.0;
+        if (pater.whithValue > 10.0) pater.whithValue = 10.0;
+        if (pater.thinFaceValue < 0.0) pater.thinFaceValue = 0.0;
+        if (pater.thinFaceValue > 10.0) pater.thinFaceValue = 10.0;
+        if (pater.bigeyeValue < 0.0) pater.bigeyeValue = 0.0;
+        if (pater.bigeyeValue > 10.0) pater.bigeyeValue = 10.0;
+        if (pater.lipstickValue < 0.0) pater.lipstickValue = 0.0;
+        if (pater.lipstickValue > 10.0) pater.lipstickValue = 10.0;
+        if (pater.blusherValue < 0.0) pater.blusherValue = 0.0;
+        if (pater.blusherValue > 10.0) pater.blusherValue = 10.0;
+
+        beauty_face_filter->SetBlurAlpha(pater.beautyValue / 10);
+        beauty_face_filter->SetWhite(pater.whithValue / 20);
+        face_reshape_filter->SetFaceSlimLevel(pater.thinFaceValue / 10);
+        face_reshape_filter->SetEyeZoomLevel(pater.bigeyeValue / 10);
+        lipstick_filter->SetBlendLevel(pater.lipstickValue / 10);
+        blusher_filter->SetBlendLevel(pater.blusherValue / 10);
     }
 };
 void GpuPixelWrapper::setParameters(float beautyValue, float whithValue, float thinFaceValue, float bigeyeValue, float lipstickValue, float blusherValue) {
